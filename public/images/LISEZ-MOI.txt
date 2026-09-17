@@ -1,0 +1,10 @@
+Remplacez logo-placeholder.svg par votre vrai logo (fichier fourni par vous) :
+
+1. Enregistrez votre logo (PNG ou SVG, fond transparent de préférence) sous le nom :
+   public/images/logo.png   (ou logo.svg)
+
+2. Dans src/components/Header.tsx et src/components/Footer.tsx, remplacez la
+   référence "/images/logo-placeholder.svg" par "/images/logo.png".
+
+Le reste du site (header, footer, page d'accueil, favicon) est déjà prêt à
+afficher ce fichier une fois ajouté.

@@ -1,0 +1,1397 @@
+[
+  {
+    "id": "classic-noir",
+    "name": "Crocs Classic",
+    "model": "Crocs Classic",
+    "price_fcfa": 15000,
+    "sizes": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "",
+    "category": "Crocs",
+    "images": [
+      "products/classic-noir/01_00000045-PHOTO-2026-09-16-20-18-13.jpg",
+      "products/classic-noir/02_00000046-PHOTO-2026-09-16-20-18-13.jpg",
+      "products/classic-noir/03_00000047-PHOTO-2026-09-16-20-18-13.jpg",
+      "products/classic-noir/04_00000048-PHOTO-2026-09-16-20-18-13.jpg",
+      "products/classic-noir/05_00000049-PHOTO-2026-09-16-20-18-13.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "classic-blanc",
+    "name": "Crocs Classic",
+    "model": "Crocs Classic — Blanc",
+    "price_fcfa": 15000,
+    "sizes": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "",
+    "category": "Crocs",
+    "images": [
+      "products/classic-blanc/01_00000054-PHOTO-2026-09-16-20-36-30.jpg",
+      "products/classic-blanc/02_00000055-PHOTO-2026-09-16-20-36-30.jpg",
+      "products/classic-blanc/03_00000056-PHOTO-2026-09-16-20-36-30.jpg",
+      "products/classic-blanc/04_00000057-PHOTO-2026-09-16-20-36-31.jpg",
+      "products/classic-blanc/05_00000058-PHOTO-2026-09-16-20-36-31.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "classic-bleu-marine",
+    "name": "Crocs Classic",
+    "model": "Crocs Classic — Bleu marine",
+    "price_fcfa": 15000,
+    "sizes": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "",
+    "category": "Crocs",
+    "images": [
+      "products/classic-bleu-marine/01_00000060-PHOTO-2026-09-16-20-37-10.jpg",
+      "products/classic-bleu-marine/02_00000061-PHOTO-2026-09-16-20-37-10.jpg",
+      "products/classic-bleu-marine/03_00000062-PHOTO-2026-09-16-20-37-10.jpg",
+      "products/classic-bleu-marine/04_00000063-PHOTO-2026-09-16-20-37-10.jpg",
+      "products/classic-bleu-marine/05_00000064-PHOTO-2026-09-16-20-37-10.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "classic-rose-clair",
+    "name": "Crocs Classic",
+    "model": "Crocs Classic — Rose clair",
+    "price_fcfa": 15000,
+    "sizes": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42"
+    ],
+    "notes": "",
+    "category": "Crocs",
+    "images": [
+      "products/classic-rose-clair/01_00000066-PHOTO-2026-09-16-20-37-55.jpg",
+      "products/classic-rose-clair/02_00000067-PHOTO-2026-09-16-20-37-55.jpg",
+      "products/classic-rose-clair/03_00000068-PHOTO-2026-09-16-20-37-55.jpg",
+      "products/classic-rose-clair/04_00000069-PHOTO-2026-09-16-20-37-55.jpg",
+      "products/classic-rose-clair/05_00000070-PHOTO-2026-09-16-20-37-56.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "classic-beige",
+    "name": "Crocs Classic",
+    "model": "Crocs Classic — Beige",
+    "price_fcfa": 15000,
+    "sizes": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "",
+    "category": "Crocs",
+    "images": [
+      "products/classic-beige/01_00000072-PHOTO-2026-09-16-20-38-18.jpg",
+      "products/classic-beige/02_00000073-PHOTO-2026-09-16-20-38-18.jpg",
+      "products/classic-beige/03_00000074-PHOTO-2026-09-16-20-38-18.jpg",
+      "products/classic-beige/04_00000075-PHOTO-2026-09-16-20-38-18.jpg",
+      "products/classic-beige/05_00000076-PHOTO-2026-09-16-20-38-18.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "classic-marron-fonce",
+    "name": "Crocs Classic",
+    "model": "Crocs Classic — Marron foncé",
+    "price_fcfa": 15000,
+    "sizes": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "",
+    "category": "Crocs",
+    "images": [
+      "products/classic-marron-fonce/01_00000078-PHOTO-2026-09-16-20-38-54.jpg",
+      "products/classic-marron-fonce/02_00000079-PHOTO-2026-09-16-20-38-54.jpg",
+      "products/classic-marron-fonce/03_00000080-PHOTO-2026-09-16-20-38-54.jpg",
+      "products/classic-marron-fonce/04_00000081-PHOTO-2026-09-16-20-38-54.jpg",
+      "products/classic-marron-fonce/05_00000082-PHOTO-2026-09-16-20-38-54.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "classic-gris-fonce",
+    "name": "Crocs Classic",
+    "model": "Crocs Classic — Gris foncé",
+    "price_fcfa": 15000,
+    "sizes": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "",
+    "category": "Crocs",
+    "images": [
+      "products/classic-gris-fonce/01_00000091-PHOTO-2026-09-16-20-40-07.jpg",
+      "products/classic-gris-fonce/02_00000092-PHOTO-2026-09-16-20-40-07.jpg",
+      "products/classic-gris-fonce/03_00000093-PHOTO-2026-09-16-20-40-08.jpg",
+      "products/classic-gris-fonce/04_00000094-PHOTO-2026-09-16-20-40-08.jpg",
+      "products/classic-gris-fonce/05_00000095-PHOTO-2026-09-16-20-40-08.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "classic-vert-olive",
+    "name": "Crocs Classic",
+    "model": "Crocs Classic — Vert olive",
+    "price_fcfa": 15000,
+    "sizes": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "",
+    "category": "Crocs",
+    "images": [
+      "products/classic-vert-olive/01_00000097-PHOTO-2026-09-16-20-40-31.jpg",
+      "products/classic-vert-olive/02_00000098-PHOTO-2026-09-16-20-40-31.jpg",
+      "products/classic-vert-olive/03_00000099-PHOTO-2026-09-16-20-40-31.jpg",
+      "products/classic-vert-olive/04_00000100-PHOTO-2026-09-16-20-40-31.jpg",
+      "products/classic-vert-olive/05_00000101-PHOTO-2026-09-16-20-40-31.jpg",
+      "products/classic-vert-olive/06_00000102-PHOTO-2026-09-16-20-40-31.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "classic-saumon",
+    "name": "Crocs Classic",
+    "model": "Crocs Classic — Saumon",
+    "price_fcfa": 15000,
+    "sizes": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42"
+    ],
+    "notes": "",
+    "category": "Crocs",
+    "images": [
+      "products/classic-saumon/01_00000104-PHOTO-2026-09-16-20-41-43.jpg",
+      "products/classic-saumon/02_00000105-PHOTO-2026-09-16-20-41-43.jpg",
+      "products/classic-saumon/03_00000106-PHOTO-2026-09-16-20-41-43.jpg",
+      "products/classic-saumon/04_00000107-PHOTO-2026-09-16-20-41-43.jpg",
+      "products/classic-saumon/05_00000108-PHOTO-2026-09-16-20-41-43.jpg",
+      "products/classic-saumon/06_00000109-PHOTO-2026-09-16-20-41-43.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "classic-bleu-ciel",
+    "name": "Crocs Classic",
+    "model": "Crocs Classic — Bleu ciel",
+    "price_fcfa": 15000,
+    "sizes": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "",
+    "category": "Crocs",
+    "images": [
+      "products/classic-bleu-ciel/01_00000111-PHOTO-2026-09-16-20-42-45.jpg",
+      "products/classic-bleu-ciel/02_00000112-PHOTO-2026-09-16-20-42-45.jpg",
+      "products/classic-bleu-ciel/03_00000113-PHOTO-2026-09-16-20-42-45.jpg",
+      "products/classic-bleu-ciel/04_00000114-PHOTO-2026-09-16-20-42-45.jpg",
+      "products/classic-bleu-ciel/05_00000115-PHOTO-2026-09-16-20-42-45.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "classic-mauve",
+    "name": "Crocs Classic",
+    "model": "Crocs Classic — Mauve",
+    "price_fcfa": 15000,
+    "sizes": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "",
+    "category": "Crocs",
+    "images": [
+      "products/classic-mauve/01_00000117-PHOTO-2026-09-16-20-44-30.jpg",
+      "products/classic-mauve/02_00000118-PHOTO-2026-09-16-20-44-30.jpg",
+      "products/classic-mauve/03_00000119-PHOTO-2026-09-16-20-44-30.jpg",
+      "products/classic-mauve/04_00000120-PHOTO-2026-09-16-20-44-31.jpg",
+      "products/classic-mauve/05_00000121-PHOTO-2026-09-16-20-44-31.jpg",
+      "products/classic-mauve/06_00000122-PHOTO-2026-09-16-20-44-31.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "classic-rose-fonce",
+    "name": "Crocs Classic",
+    "model": "Crocs Classic — Rose foncé",
+    "price_fcfa": 15000,
+    "sizes": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-45"
+    ],
+    "notes": "",
+    "category": "Crocs",
+    "images": [
+      "products/classic-rose-fonce/01_00000124-PHOTO-2026-09-16-20-45-16.jpg",
+      "products/classic-rose-fonce/02_00000125-PHOTO-2026-09-16-20-45-16.jpg",
+      "products/classic-rose-fonce/03_00000126-PHOTO-2026-09-16-20-45-16.jpg",
+      "products/classic-rose-fonce/04_00000127-PHOTO-2026-09-16-20-45-16.jpg",
+      "products/classic-rose-fonce/05_00000128-PHOTO-2026-09-16-20-45-16.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-45"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "classic-marron-clair",
+    "name": "Crocs Classic",
+    "model": "Crocs Classic — Marron clair",
+    "price_fcfa": 15000,
+    "sizes": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "",
+    "category": "Crocs",
+    "images": [
+      "products/classic-marron-clair/01_00000130-PHOTO-2026-09-16-20-45-39.jpg",
+      "products/classic-marron-clair/02_00000131-PHOTO-2026-09-16-20-45-39.jpg",
+      "products/classic-marron-clair/03_00000132-PHOTO-2026-09-16-20-45-39.jpg",
+      "products/classic-marron-clair/04_00000133-PHOTO-2026-09-16-20-45-39.jpg",
+      "products/classic-marron-clair/05_00000134-PHOTO-2026-09-16-20-45-39.jpg",
+      "products/classic-marron-clair/06_00000135-PHOTO-2026-09-16-20-45-40.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "classic-bleu-clair",
+    "name": "Crocs Classic",
+    "model": "Crocs Classic — Bleu clair",
+    "price_fcfa": 15000,
+    "sizes": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42"
+    ],
+    "notes": "",
+    "category": "Crocs",
+    "images": [
+      "products/classic-bleu-clair/01_00000137-PHOTO-2026-09-16-20-46-06.jpg",
+      "products/classic-bleu-clair/02_00000138-PHOTO-2026-09-16-20-46-06.jpg",
+      "products/classic-bleu-clair/03_00000139-PHOTO-2026-09-16-20-46-07.jpg",
+      "products/classic-bleu-clair/04_00000140-PHOTO-2026-09-16-20-46-07.jpg",
+      "products/classic-bleu-clair/05_00000141-PHOTO-2026-09-16-20-46-07.jpg",
+      "products/classic-bleu-clair/06_00000142-PHOTO-2026-09-16-20-46-07.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "classic-gris-clair",
+    "name": "Crocs Classic",
+    "model": "Crocs Classic — Gris clair",
+    "price_fcfa": 15000,
+    "sizes": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "",
+    "category": "Crocs",
+    "images": [
+      "products/classic-gris-clair/01_00000144-PHOTO-2026-09-16-20-46-35.jpg",
+      "products/classic-gris-clair/02_00000145-PHOTO-2026-09-16-20-46-36.jpg",
+      "products/classic-gris-clair/03_00000146-PHOTO-2026-09-16-20-46-36.jpg",
+      "products/classic-gris-clair/04_00000147-PHOTO-2026-09-16-20-46-36.jpg",
+      "products/classic-gris-clair/05_00000148-PHOTO-2026-09-16-20-46-36.jpg",
+      "products/classic-gris-clair/06_00000149-PHOTO-2026-09-16-20-46-36.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "34-35",
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "moana-maui",
+    "name": "Crocs Collaboration",
+    "model": "Disney Moana Maui Classic Clog",
+    "price_fcfa": null,
+    "sizes": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42"
+    ],
+    "notes": "Le vendeur indique qu'il ne reste actuellement qu'une paire en pointure 38-39. Prix à confirmer.",
+    "category": "Crocs",
+    "images": [
+      "products/moana-maui/01_00000154-PHOTO-2026-09-16-20-59-56.jpg",
+      "products/moana-maui/02_00000155-PHOTO-2026-09-16-20-59-56.jpg",
+      "products/moana-maui/03_00000156-PHOTO-2026-09-16-20-59-56.jpg",
+      "products/moana-maui/04_00000157-PHOTO-2026-09-16-20-59-57.jpg",
+      "products/moana-maui/05_00000158-PHOTO-2026-09-16-20-59-57.jpg",
+      "products/moana-maui/06_00000159-PHOTO-2026-09-16-20-59-57.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "a_confirmer",
+    "available_sizes_current": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42"
+    ],
+    "stock_quantity": "unknown",
+    "stock_quantity_by_size": {
+      "38-39": 1
+    }
+  },
+  {
+    "id": "moana-classic",
+    "name": "Crocs Collaboration",
+    "model": "Disney Moana Classic Clog",
+    "price_fcfa": null,
+    "sizes": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42"
+    ],
+    "notes": "Le vendeur indique qu'il ne reste actuellement qu'une paire en 41-42. Prix à confirmer.",
+    "category": "Crocs",
+    "images": [
+      "products/moana-classic/01_00000162-PHOTO-2026-09-16-21-10-48.jpg",
+      "products/moana-classic/02_00000163-PHOTO-2026-09-16-21-10-49.jpg",
+      "products/moana-classic/03_00000164-PHOTO-2026-09-16-21-10-49.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "a_confirmer",
+    "available_sizes_current": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42"
+    ],
+    "stock_quantity": "unknown",
+    "stock_quantity_by_size": {
+      "41-42": 1
+    }
+  },
+  {
+    "id": "spiderman",
+    "name": "Crocs Collaboration",
+    "model": "Spider-Man™ Classic Clog",
+    "price_fcfa": null,
+    "sizes": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43"
+    ],
+    "notes": "43-44 et 45-46 en rupture. Prix à confirmer.",
+    "category": "Crocs",
+    "images": [
+      "products/spiderman/01_00000167-PHOTO-2026-09-16-21-17-10.jpg",
+      "products/spiderman/02_00000168-PHOTO-2026-09-16-21-17-10.jpg",
+      "products/spiderman/03_00000169-PHOTO-2026-09-16-21-17-10.jpg",
+      "products/spiderman/04_00000170-PHOTO-2026-09-16-21-17-10.jpg",
+      "products/spiderman/05_00000171-PHOTO-2026-09-16-21-17-11.jpg",
+      "products/spiderman/06_00000172-PHOTO-2026-09-16-21-17-11.jpg",
+      "products/spiderman/07_00000173-PHOTO-2026-09-16-21-17-11.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "a_confirmer",
+    "available_sizes_current": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "grogu",
+    "name": "Crocs Collaboration",
+    "model": "STAR WARS™ GROGU™ CLASSIC CLOG",
+    "price_fcfa": null,
+    "sizes": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43"
+    ],
+    "notes": "43-44 et 45-46 en rupture. Prix à confirmer.",
+    "category": "Crocs",
+    "images": [
+      "products/grogu/01_00000175-PHOTO-2026-09-16-21-21-17.jpg",
+      "products/grogu/02_00000176-PHOTO-2026-09-16-21-21-18.jpg",
+      "products/grogu/03_00000177-PHOTO-2026-09-16-21-21-18.jpg",
+      "products/grogu/04_00000178-PHOTO-2026-09-16-21-21-18.jpg",
+      "products/grogu/05_00000179-PHOTO-2026-09-16-21-21-18.jpg",
+      "products/grogu/06_00000180-PHOTO-2026-09-16-21-21-18.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "a_confirmer",
+    "available_sizes_current": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "darth-vader",
+    "name": "Crocs Collaboration",
+    "model": "STAR WARS™ Darth Vader Classic Clog",
+    "price_fcfa": null,
+    "sizes": [
+      "42-43"
+    ],
+    "notes": "Toutes les autres pointures indiquées sont en rupture. Prix à confirmer.",
+    "category": "Crocs",
+    "images": [
+      "products/darth-vader/01_00000184-PHOTO-2026-09-16-21-27-20.jpg",
+      "products/darth-vader/02_00000185-PHOTO-2026-09-16-21-27-21.jpg",
+      "products/darth-vader/03_00000186-PHOTO-2026-09-16-21-27-21.jpg",
+      "products/darth-vader/04_00000187-PHOTO-2026-09-16-21-27-21.jpg",
+      "products/darth-vader/05_00000188-PHOTO-2026-09-16-21-27-21.jpg",
+      "products/darth-vader/06_00000189-PHOTO-2026-09-16-21-27-21.jpg",
+      "products/darth-vader/07_00000190-PHOTO-2026-09-16-21-27-22.jpg",
+      "products/darth-vader/08_00000191-PHOTO-2026-09-16-21-27-22.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "a_confirmer",
+    "available_sizes_current": [
+      "42-43"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "itachi",
+    "name": "Crocs Collaboration",
+    "model": "Naruto Itachi Classic Clog",
+    "price_fcfa": 20000,
+    "sizes": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42"
+    ],
+    "notes": "42-43, 43-44 et 45-46 en rupture.",
+    "category": "Crocs",
+    "images": [
+      "products/itachi/01_00000195-PHOTO-2026-09-16-23-20-30.jpg",
+      "products/itachi/02_00000196-PHOTO-2026-09-16-23-20-30.jpg",
+      "products/itachi/03_00000197-PHOTO-2026-09-16-23-20-30.jpg",
+      "products/itachi/04_00000198-PHOTO-2026-09-16-23-20-31.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "naruto-clog",
+    "name": "Crocs Collaboration",
+    "model": "Crocs Naruto Clog",
+    "price_fcfa": 20000,
+    "sizes": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "",
+    "category": "Crocs",
+    "images": [
+      "products/naruto-clog/01_00000205-PHOTO-2026-09-16-23-31-08.jpg",
+      "products/naruto-clog/02_00000206-PHOTO-2026-09-16-23-31-09.jpg",
+      "products/naruto-clog/03_00000207-PHOTO-2026-09-16-23-31-09.jpg",
+      "products/naruto-clog/04_00000208-PHOTO-2026-09-16-23-31-10.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "luffy",
+    "name": "Crocs Collaboration",
+    "model": "ONE PIECE Luffy Classic Clog",
+    "price_fcfa": 20000,
+    "sizes": [
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "36-37 et 37-38 en rupture.",
+    "category": "Crocs",
+    "images": [
+      "products/luffy/01_00000210-PHOTO-2026-09-16-23-37-32.jpg",
+      "products/luffy/02_00000211-PHOTO-2026-09-16-23-37-32.jpg",
+      "products/luffy/03_00000212-PHOTO-2026-09-16-23-37-32.jpg",
+      "products/luffy/04_00000213-PHOTO-2026-09-16-23-37-32.jpg",
+      "products/luffy/05_00000214-PHOTO-2026-09-16-23-37-33.jpg",
+      "products/luffy/06_00000215-PHOTO-2026-09-16-23-37-33.jpg",
+      "products/luffy/07_00000216-PHOTO-2026-09-16-23-37-33.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "jujutsu-kaisen",
+    "name": "Crocs Collaboration",
+    "model": "Jujutsu Kaisen Classic Clog",
+    "price_fcfa": 20000,
+    "sizes": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "",
+    "category": "Crocs",
+    "images": [
+      "products/jujutsu-kaisen/01_00000219-PHOTO-2026-09-16-23-41-21.jpg",
+      "products/jujutsu-kaisen/02_00000220-PHOTO-2026-09-16-23-41-22.jpg",
+      "products/jujutsu-kaisen/03_00000221-PHOTO-2026-09-16-23-41-22.jpg",
+      "products/jujutsu-kaisen/04_00000222-PHOTO-2026-09-16-23-41-22.jpg",
+      "products/jujutsu-kaisen/05_00000223-PHOTO-2026-09-16-23-41-23.jpg",
+      "products/jujutsu-kaisen/06_00000224-PHOTO-2026-09-16-23-41-23.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "cars",
+    "name": "Crocs Collaboration",
+    "model": "Cars Flash McQueen Classic Clog",
+    "price_fcfa": 20000,
+    "sizes": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "",
+    "category": "Crocs",
+    "images": [
+      "products/cars/01_00000227-PHOTO-2026-09-17-00-15-08.jpg",
+      "products/cars/02_00000228-PHOTO-2026-09-17-00-15-08.jpg",
+      "products/cars/03_00000229-PHOTO-2026-09-17-00-15-08.jpg",
+      "products/cars/04_00000230-PHOTO-2026-09-17-00-15-09.jpg",
+      "products/cars/05_00000231-PHOTO-2026-09-17-00-15-09.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "batman",
+    "name": "Crocs Collaboration",
+    "model": "Batman Batmobile Classic Clog",
+    "price_fcfa": 20000,
+    "sizes": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "",
+    "category": "Crocs",
+    "images": [
+      "products/batman/01_00000233-PHOTO-2026-09-17-00-18-54.jpg",
+      "products/batman/02_00000234-PHOTO-2026-09-17-00-18-54.jpg",
+      "products/batman/03_00000235-PHOTO-2026-09-17-00-18-54.jpg",
+      "products/batman/04_00000236-PHOTO-2026-09-17-00-18-54.jpg",
+      "products/batman/05_00000237-PHOTO-2026-09-17-00-18-55.jpg",
+      "products/batman/06_00000238-PHOTO-2026-09-17-00-18-55.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "nfl-49ers",
+    "name": "Crocs Collaboration",
+    "model": "NFL San Francisco 49ers Classic Clog",
+    "price_fcfa": 20000,
+    "sizes": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "",
+    "category": "Crocs",
+    "images": [
+      "products/nfl-49ers/01_00000240-PHOTO-2026-09-17-00-22-18.jpg",
+      "products/nfl-49ers/02_00000241-PHOTO-2026-09-17-00-22-18.jpg",
+      "products/nfl-49ers/03_00000242-PHOTO-2026-09-17-00-22-18.jpg",
+      "products/nfl-49ers/04_00000243-PHOTO-2026-09-17-00-22-18.jpg",
+      "products/nfl-49ers/05_00000244-PHOTO-2026-09-17-00-22-18.jpg",
+      "products/nfl-49ers/06_00000245-PHOTO-2026-09-17-00-22-18.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "nfl-texans",
+    "name": "Crocs Collaboration",
+    "model": "NFL Houston Texans Classic Clog",
+    "price_fcfa": 20000,
+    "sizes": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "45-46"
+    ],
+    "notes": "43-44 en rupture.",
+    "category": "Crocs",
+    "images": [
+      "products/nfl-texans/01_00000247-PHOTO-2026-09-17-00-26-42.jpg",
+      "products/nfl-texans/02_00000248-PHOTO-2026-09-17-00-26-42.jpg",
+      "products/nfl-texans/03_00000249-PHOTO-2026-09-17-00-26-42.jpg",
+      "products/nfl-texans/04_00000250-PHOTO-2026-09-17-00-26-42.jpg",
+      "products/nfl-texans/05_00000251-PHOTO-2026-09-17-00-26-42.jpg",
+      "products/nfl-texans/06_00000252-PHOTO-2026-09-17-00-26-42.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "36-37",
+      "37-38",
+      "38-39",
+      "39-40",
+      "41-42",
+      "42-43",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "saturday-blanc",
+    "name": "Sandales",
+    "model": "Saturday Enamel Buckle Sandal — Blanc",
+    "price_fcfa": 13000,
+    "sizes": [
+      "39-40",
+      "41-42",
+      "42-43"
+    ],
+    "notes": "36-37, 37-38 et 38-39 en rupture.",
+    "category": "Crocs",
+    "images": [
+      "products/saturday-blanc/01_00000268-PHOTO-2026-09-17-00-39-49.jpg",
+      "products/saturday-blanc/02_00000269-PHOTO-2026-09-17-00-39-49.jpg",
+      "products/saturday-blanc/03_00000270-PHOTO-2026-09-17-00-39-49.jpg",
+      "products/saturday-blanc/04_00000271-PHOTO-2026-09-17-00-39-49.jpg",
+      "products/saturday-blanc/05_00000272-PHOTO-2026-09-17-00-39-49.jpg",
+      "products/saturday-blanc/06_00000273-PHOTO-2026-09-17-00-39-49.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "39-40",
+      "41-42",
+      "42-43"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "saturday-rose",
+    "name": "Sandales",
+    "model": "Saturday Enamel Buckle Sandal — Rose",
+    "price_fcfa": 13000,
+    "sizes": [
+      "38-39",
+      "39-40",
+      "41-42"
+    ],
+    "notes": "36-37, 37-38 et 42-43 en rupture.",
+    "category": "Crocs",
+    "images": [
+      "products/saturday-rose/01_00000275-PHOTO-2026-09-17-00-40-54.jpg",
+      "products/saturday-rose/02_00000276-PHOTO-2026-09-17-00-40-54.jpg",
+      "products/saturday-rose/03_00000277-PHOTO-2026-09-17-00-40-55.jpg",
+      "products/saturday-rose/04_00000278-PHOTO-2026-09-17-00-40-55.jpg",
+      "products/saturday-rose/05_00000279-PHOTO-2026-09-17-00-40-55.jpg",
+      "products/saturday-rose/06_00000280-PHOTO-2026-09-17-00-40-55.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "38-39",
+      "39-40",
+      "41-42"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "saturday-noir",
+    "name": "Sandales",
+    "model": "Saturday Enamel Buckle Sandal — Noir",
+    "price_fcfa": 13000,
+    "sizes": [
+      "37-38",
+      "38-39",
+      "39-40"
+    ],
+    "notes": "36-37, 41-42 et 42-43 en rupture.",
+    "category": "Crocs",
+    "images": [
+      "products/saturday-noir/01_00000282-PHOTO-2026-09-17-00-47-23.jpg",
+      "products/saturday-noir/02_00000283-PHOTO-2026-09-17-00-47-23.jpg",
+      "products/saturday-noir/03_00000284-PHOTO-2026-09-17-00-47-24.jpg",
+      "products/saturday-noir/04_00000285-PHOTO-2026-09-17-00-47-24.jpg",
+      "products/saturday-noir/05_00000286-PHOTO-2026-09-17-00-47-24.jpg",
+      "products/saturday-noir/06_00000287-PHOTO-2026-09-17-00-47-24.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "37-38",
+      "38-39",
+      "39-40"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "saturday-bleu",
+    "name": "Sandales",
+    "model": "Saturday Enamel Buckle Sandal — Bleu clair",
+    "price_fcfa": 13000,
+    "sizes": [
+      "38-39",
+      "39-40"
+    ],
+    "notes": "36-37, 37-38, 41-42 et 42-43 en rupture.",
+    "category": "Crocs",
+    "images": [
+      "products/saturday-bleu/01_00000289-PHOTO-2026-09-17-00-48-07.jpg",
+      "products/saturday-bleu/02_00000290-PHOTO-2026-09-17-00-48-07.jpg",
+      "products/saturday-bleu/03_00000291-PHOTO-2026-09-17-00-48-08.jpg",
+      "products/saturday-bleu/04_00000292-PHOTO-2026-09-17-00-48-08.jpg",
+      "products/saturday-bleu/05_00000293-PHOTO-2026-09-17-00-48-08.jpg",
+      "products/saturday-bleu/06_00000294-PHOTO-2026-09-17-00-48-08.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "38-39",
+      "39-40"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "bape-noir",
+    "name": "Crocs Collaboration",
+    "model": "BAPE® x Crocs Echo RO Clog — Noir",
+    "price_fcfa": 25000,
+    "sizes": [
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "Couleur déduite des photos; à confirmer par le vendeur si nécessaire.",
+    "category": "Crocs",
+    "images": [
+      "products/bape-noir/01_00000305-PHOTO-2026-09-17-02-05-21.jpg",
+      "products/bape-noir/02_00000306-PHOTO-2026-09-17-02-05-21.jpg",
+      "products/bape-noir/03_00000307-PHOTO-2026-09-17-02-05-21.jpg",
+      "products/bape-noir/04_00000308-PHOTO-2026-09-17-02-05-21.jpg",
+      "products/bape-noir/05_00000309-PHOTO-2026-09-17-02-05-21.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "bape-violet",
+    "name": "Crocs Collaboration",
+    "model": "BAPE® x Crocs Echo RO Clog — Violet",
+    "price_fcfa": 25000,
+    "sizes": [
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "Couleur déduite des photos; à confirmer par le vendeur si nécessaire.",
+    "category": "Crocs",
+    "images": [
+      "products/bape-violet/01_00000312-PHOTO-2026-09-17-02-07-44.jpg",
+      "products/bape-violet/02_00000313-PHOTO-2026-09-17-02-07-45.jpg",
+      "products/bape-violet/03_00000314-PHOTO-2026-09-17-02-07-45.jpg",
+      "products/bape-violet/04_00000315-PHOTO-2026-09-17-02-07-45.jpg",
+      "products/bape-violet/05_00000316-PHOTO-2026-09-17-02-07-45.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "bape-noir-blanc",
+    "name": "Crocs Collaboration",
+    "model": "BAPE® x Crocs Echo RO Clog — Noir/blanc",
+    "price_fcfa": 25000,
+    "sizes": [
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "Couleur déduite des photos; à confirmer par le vendeur si nécessaire.",
+    "category": "Crocs",
+    "images": [
+      "products/bape-noir-blanc/01_00000318-PHOTO-2026-09-17-02-10-32.jpg",
+      "products/bape-noir-blanc/02_00000319-PHOTO-2026-09-17-02-10-32.jpg",
+      "products/bape-noir-blanc/03_00000320-PHOTO-2026-09-17-02-10-32.jpg",
+      "products/bape-noir-blanc/04_00000321-PHOTO-2026-09-17-02-10-32.jpg",
+      "products/bape-noir-blanc/05_00000322-PHOTO-2026-09-17-02-10-32.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "bape-rouge",
+    "name": "Crocs Collaboration",
+    "model": "BAPE® x Crocs Echo RO Clog — Rouge",
+    "price_fcfa": 25000,
+    "sizes": [
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "Couleur déduite des photos; à confirmer par le vendeur si nécessaire.",
+    "category": "Crocs",
+    "images": [
+      "products/bape-rouge/01_00000324-PHOTO-2026-09-17-02-11-47.jpg",
+      "products/bape-rouge/02_00000325-PHOTO-2026-09-17-02-11-47.jpg",
+      "products/bape-rouge/03_00000326-PHOTO-2026-09-17-02-11-48.jpg",
+      "products/bape-rouge/04_00000327-PHOTO-2026-09-17-02-11-48.jpg",
+      "products/bape-rouge/05_00000328-PHOTO-2026-09-17-02-11-48.jpg",
+      "products/bape-rouge/06_00000329-PHOTO-2026-09-17-02-11-48.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "bape-marron",
+    "name": "Crocs Collaboration",
+    "model": "BAPE® x Crocs Echo RO Clog — Marron",
+    "price_fcfa": 25000,
+    "sizes": [
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "Couleur déduite des photos; à confirmer par le vendeur si nécessaire.",
+    "category": "Crocs",
+    "images": [
+      "products/bape-marron/01_00000331-PHOTO-2026-09-17-02-13-14.jpg",
+      "products/bape-marron/02_00000332-PHOTO-2026-09-17-02-13-14.jpg",
+      "products/bape-marron/03_00000333-PHOTO-2026-09-17-02-13-14.jpg",
+      "products/bape-marron/04_00000334-PHOTO-2026-09-17-02-13-15.jpg",
+      "products/bape-marron/05_00000335-PHOTO-2026-09-17-02-13-15.jpg",
+      "products/bape-marron/06_00000336-PHOTO-2026-09-17-02-13-15.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "bape-bleu",
+    "name": "Crocs Collaboration",
+    "model": "BAPE® x Crocs Echo RO Clog — Bleu",
+    "price_fcfa": 25000,
+    "sizes": [
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "notes": "Couleur déduite des photos; à confirmer par le vendeur si nécessaire.",
+    "category": "Crocs",
+    "images": [
+      "products/bape-bleu/01_00000338-PHOTO-2026-09-17-02-15-14.jpg",
+      "products/bape-bleu/02_00000339-PHOTO-2026-09-17-02-15-14.jpg",
+      "products/bape-bleu/03_00000340-PHOTO-2026-09-17-02-15-14.jpg",
+      "products/bape-bleu/04_00000341-PHOTO-2026-09-17-02-15-14.jpg",
+      "products/bape-bleu/05_00000342-PHOTO-2026-09-17-02-15-14.jpg",
+      "products/bape-bleu/06_00000343-PHOTO-2026-09-17-02-15-14.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [
+      "39-40",
+      "41-42",
+      "42-43",
+      "43-44",
+      "45-46"
+    ],
+    "stock_quantity": "unknown"
+  },
+  {
+    "id": "pins-crocs",
+    "name": "Pins Crocs",
+    "model": "Pins Crocs",
+    "price_fcfa": 350,
+    "sizes": [],
+    "notes": "Prix indiqué: 350 FCFA l'unité. Les images représentent différents designs; aucun système de pointures.",
+    "category": "Accessoires",
+    "images": [
+      "products/pins-crocs/01_00000352-PHOTO-2026-09-17-06-22-17.jpg",
+      "products/pins-crocs/02_00000353-PHOTO-2026-09-17-06-22-18.jpg",
+      "products/pins-crocs/03_00000354-PHOTO-2026-09-17-06-22-18.jpg",
+      "products/pins-crocs/04_00000355-PHOTO-2026-09-17-06-22-18.jpg",
+      "products/pins-crocs/05_00000356-PHOTO-2026-09-17-06-22-18.jpg",
+      "products/pins-crocs/06_00000357-PHOTO-2026-09-17-06-22-18.jpg",
+      "products/pins-crocs/07_00000358-PHOTO-2026-09-17-06-22-18.jpg",
+      "products/pins-crocs/08_00000359-PHOTO-2026-09-17-06-22-18.jpg",
+      "products/pins-crocs/09_00000360-PHOTO-2026-09-17-06-22-18.jpg",
+      "products/pins-crocs/10_00000361-PHOTO-2026-09-17-06-22-18.jpg",
+      "products/pins-crocs/11_00000362-PHOTO-2026-09-17-06-22-19.jpg",
+      "products/pins-crocs/12_00000363-PHOTO-2026-09-17-06-22-19.jpg",
+      "products/pins-crocs/13_00000364-PHOTO-2026-09-17-06-22-19.jpg",
+      "products/pins-crocs/14_00000365-PHOTO-2026-09-17-06-22-19.jpg",
+      "products/pins-crocs/15_00000366-PHOTO-2026-09-17-06-22-19.jpg",
+      "products/pins-crocs/16_00000367-PHOTO-2026-09-17-06-22-19.jpg",
+      "products/pins-crocs/17_00000368-PHOTO-2026-09-17-06-22-19.jpg",
+      "products/pins-crocs/18_00000369-PHOTO-2026-09-17-06-22-19.jpg",
+      "products/pins-crocs/19_00000370-PHOTO-2026-09-17-06-22-19.jpg",
+      "products/pins-crocs/20_00000371-PHOTO-2026-09-17-06-22-20.jpg"
+    ],
+    "currency": "XOF",
+    "price_status": "confirme",
+    "available_sizes_current": [],
+    "stock_quantity": "unknown"
+  }
+]

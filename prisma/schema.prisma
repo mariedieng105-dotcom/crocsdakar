@@ -21,7 +21,7 @@ model Product {
   name        String
   model       String
   slug        String   @unique
-  price       Int
+  price       Int?
   description String   @db.Text
   available   Boolean  @default(true)
   quantity    Int?

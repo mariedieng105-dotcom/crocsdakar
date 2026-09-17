@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatFCFA } from "@/lib/shop";
+import { formatPrice } from "@/lib/shop";
 import type { SerializedProduct } from "@/lib/serialize";
 
 export default function ProductCard({ product }: { product: SerializedProduct }) {
@@ -37,7 +37,13 @@ export default function ProductCard({ product }: { product: SerializedProduct })
           {product.model}
         </p>
         <h3 className="font-semibold text-[var(--color-navy)] leading-snug line-clamp-2">{product.name}</h3>
-        <p className="font-display font-bold text-[var(--color-navy)]">{formatFCFA(product.price)}</p>
+        <p
+          className={`font-display font-bold ${
+            product.price === null ? "text-[var(--color-navy)]/50 text-sm" : "text-[var(--color-navy)]"
+          }`}
+        >
+          {formatPrice(product.price)}
+        </p>
       </div>
     </Link>
   );

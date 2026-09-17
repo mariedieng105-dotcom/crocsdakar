@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { formatFCFA } from "@/lib/shop";
+import { formatPrice } from "@/lib/shop";
 import type { SerializedProduct } from "@/lib/serialize";
 
 export default function AdminProductRow({ product }: { product: SerializedProduct }) {
@@ -43,7 +43,7 @@ export default function AdminProductRow({ product }: { product: SerializedProduc
       </td>
       <td className="py-2.5 pr-4 font-medium text-[var(--color-navy)]">{product.name}</td>
       <td className="py-2.5 pr-4 text-[var(--color-navy)]/70">{product.model}</td>
-      <td className="py-2.5 pr-4">{formatFCFA(product.price)}</td>
+      <td className="py-2.5 pr-4">{formatPrice(product.price)}</td>
       <td className="py-2.5 pr-4">
         <button
           onClick={toggleAvailable}

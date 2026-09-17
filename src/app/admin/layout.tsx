@@ -32,6 +32,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <Link href="/admin/commandes" className="px-5 py-3 text-sm font-medium hover:bg-white/10 whitespace-nowrap">
             Commandes
           </Link>
+          <Link href="/admin/import-catalogue" className="px-5 py-3 text-sm font-medium hover:bg-white/10 whitespace-nowrap text-[var(--color-gold)]">
+            Import catalogue initial
+          </Link>
         </nav>
         <div className="p-5 border-t border-white/10 hidden lg:flex flex-col gap-2">
           <p className="text-xs text-white/50 truncate">{session.email}</p>

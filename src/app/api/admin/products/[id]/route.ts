@@ -3,10 +3,20 @@ import { prisma } from "@/lib/prisma";
 import { serializeProduct } from "@/lib/serialize";
 import { z } from "zod";
 
+// Distinct du schéma de création : ici, un champ "price" absent de la requête
+// (ex. un simple toggle de disponibilité) ne doit PAS effacer le prix existant.
+// Seul un "price" explicitement envoyé comme null/"" efface le prix (=> à confirmer).
+const priceUpdateSchema = z
+  .preprocess(
+    (val) => (val === "" || val === null ? null : val),
+    z.union([z.coerce.number().int().positive("Le prix doit être positif."), z.null()])
+  )
+  .optional();
+
 const updateSchema = z.object({
   name: z.string().trim().min(1).optional(),
   model: z.string().trim().min(1).optional(),
-  price: z.coerce.number().int().positive().optional(),
+  price: priceUpdateSchema,
   description: z.string().trim().optional(),
   available: z.coerce.boolean().optional(),
   quantity: z.coerce.number().int().nonnegative().nullable().optional(),

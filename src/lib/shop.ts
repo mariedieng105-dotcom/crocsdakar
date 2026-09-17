@@ -13,8 +13,14 @@ export const SHOP = {
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
 };
 
+export const PRICE_TBD_LABEL = "Prix à confirmer";
+
 export function formatFCFA(amount: number): string {
   return `${amount.toLocaleString("fr-FR").replace(/,/g, " ")} FCFA`;
+}
+
+export function formatPrice(amount: number | null): string {
+  return amount === null ? PRICE_TBD_LABEL : formatFCFA(amount);
 }
 
 export function whatsappLink(message: string, phone: string = SHOP.whatsappNumber): string {

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { serializeProduct } from "@/lib/serialize";
-import { SHOP, formatFCFA } from "@/lib/shop";
+import { SHOP, formatPrice } from "@/lib/shop";
 import ProductGalleryAndActions from "@/components/ProductGalleryAndActions";
 
 export const revalidate = 60;
@@ -25,7 +25,7 @@ export async function generateMetadata({
   if (!product) return { title: "Produit introuvable" };
 
   const title = `${product.name} — ${product.model} | Crocs à Dakar`;
-  const description = `${product.name} (${product.model}) à ${formatFCFA(product.price)}. Disponible chez ${SHOP.storeName} à Dakar. Commandez en ligne, paiement à la livraison.`;
+  const description = `${product.name} (${product.model}) — ${formatPrice(product.price)}. Disponible chez ${SHOP.storeName} à Dakar. Commandez en ligne, paiement à la livraison.`;
 
   return {
     title,
@@ -48,6 +48,8 @@ export default async function ProductPage({
   const product = await getProduct(slug);
   if (!product) notFound();
 
+  // Schema.org exige un prix numérique pour une Offer : on omet le bloc "offers"
+  // tant que le prix n'est pas confirmé, plutôt que d'y mettre une valeur inventée.
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -56,19 +58,21 @@ export default async function ProductPage({
     description: product.description || product.name,
     image: product.images.map((i) => i.url),
     sku: product.id,
-    offers: {
-      "@type": "Offer",
-      priceCurrency: "XOF",
-      price: product.price,
-      availability: product.available
-        ? "https://schema.org/InStock"
-        : "https://schema.org/OutOfStock",
-      url: `${SHOP.siteUrl}/produit/${product.slug}`,
-      seller: {
-        "@type": "Organization",
-        name: SHOP.storeName,
+    ...(product.price !== null && {
+      offers: {
+        "@type": "Offer",
+        priceCurrency: "XOF",
+        price: product.price,
+        availability: product.available
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+        url: `${SHOP.siteUrl}/produit/${product.slug}`,
+        seller: {
+          "@type": "Organization",
+          name: SHOP.storeName,
+        },
       },
-    },
+    }),
   };
 
   return (

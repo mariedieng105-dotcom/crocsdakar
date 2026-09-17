@@ -32,9 +32,11 @@ export async function GET(request: NextRequest) {
     where.sizes = { some: { label: size, available: true } };
   }
 
+  // Les produits sans prix confirmé (price = null) sont toujours relégués en fin
+  // de liste lors d'un tri par prix, quel que soit le sens du tri.
   let orderBy: Prisma.ProductOrderByWithRelationInput = { createdAt: "desc" };
-  if (sort === "price_asc") orderBy = { price: "asc" };
-  else if (sort === "price_desc") orderBy = { price: "desc" };
+  if (sort === "price_asc") orderBy = { price: { sort: "asc", nulls: "last" } };
+  else if (sort === "price_desc") orderBy = { price: { sort: "desc", nulls: "last" } };
   else if (sort === "newest") orderBy = { createdAt: "desc" };
 
   const products = await prisma.product.findMany({

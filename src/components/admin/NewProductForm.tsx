@@ -32,7 +32,7 @@ export default function NewProductForm() {
         body: JSON.stringify({
           name,
           model,
-          price: Number(price),
+          price: price.trim() === "" ? null : Number(price),
           description,
           available,
           quantity: quantity ? Number(quantity) : null,
@@ -65,8 +65,11 @@ export default function NewProductForm() {
         <input id="model" required value={model} onChange={(e) => setModel(e.target.value)} className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm" />
       </div>
       <div>
-        <label htmlFor="price" className="block text-sm font-semibold text-[var(--color-navy)] mb-1">Prix (FCFA) *</label>
-        <input id="price" type="number" min={0} required value={price} onChange={(e) => setPrice(e.target.value)} className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm" />
+        <label htmlFor="price" className="block text-sm font-semibold text-[var(--color-navy)] mb-1">Prix (FCFA)</label>
+        <input id="price" type="number" min={0} value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Laisser vide si prix à confirmer" className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm" />
+        <p className="text-xs text-[var(--color-navy)]/50 mt-1">
+          Laissez vide pour afficher « Prix à confirmer » — le produit restera visible mais non commandable jusqu&apos;à ce que vous renseigniez un prix.
+        </p>
       </div>
       <div>
         <label htmlFor="description" className="block text-sm font-semibold text-[var(--color-navy)] mb-1">Description</label>

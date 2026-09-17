@@ -1,9 +1,16 @@
 import { z } from "zod";
 
+// Un prix vide, null ou une chaîne vide signifie "prix à confirmer" (le produit
+// reste visible mais non commandable tant qu'un prix n'est pas renseigné).
+export const priceInputSchema = z.preprocess(
+  (val) => (val === "" || val === null || val === undefined ? null : val),
+  z.union([z.coerce.number().int().positive("Le prix doit être positif."), z.null()])
+);
+
 export const productInputSchema = z.object({
   name: z.string().trim().min(1, "Le nom est requis."),
   model: z.string().trim().min(1, "Le modèle est requis."),
-  price: z.coerce.number().int().positive("Le prix doit être positif."),
+  price: priceInputSchema,
   description: z.string().trim().default(""),
   available: z.coerce.boolean().default(true),
   quantity: z.coerce.number().int().nonnegative().nullable().optional(),

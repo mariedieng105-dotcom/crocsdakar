@@ -28,7 +28,7 @@ export default function ProductEditor({ initialProduct }: { initialProduct: Seri
 function InfoSection({ product, onSaved }: { product: SerializedProduct; onSaved: () => void }) {
   const [name, setName] = useState(product.name);
   const [model, setModel] = useState(product.model);
-  const [price, setPrice] = useState(String(product.price));
+  const [price, setPrice] = useState(product.price !== null ? String(product.price) : "");
   const [description, setDescription] = useState(product.description);
   const [available, setAvailable] = useState(product.available);
   const [quantity, setQuantity] = useState(product.quantity !== null ? String(product.quantity) : "");
@@ -46,7 +46,7 @@ function InfoSection({ product, onSaved }: { product: SerializedProduct; onSaved
       body: JSON.stringify({
         name,
         model,
-        price: Number(price),
+        price: price.trim() === "" ? null : Number(price),
         description,
         available,
         quantity: quantity ? Number(quantity) : null,
@@ -83,7 +83,12 @@ function InfoSection({ product, onSaved }: { product: SerializedProduct; onSaved
           </div>
           <div>
             <label className="block text-sm font-semibold text-[var(--color-navy)] mb-1">Prix (FCFA)</label>
-            <input type="number" min={0} value={price} onChange={(e) => setPrice(e.target.value)} className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm" />
+            <input type="number" min={0} value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Vide = Prix à confirmer" className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm" />
+            {price.trim() === "" && (
+              <p className="text-xs text-amber-600 mt-1">
+                Le produit s&apos;affichera avec « Prix à confirmer » et ne pourra pas être commandé tant qu&apos;un prix n&apos;est pas saisi.
+              </p>
+            )}
           </div>
           <div>
             <label className="block text-sm font-semibold text-[var(--color-navy)] mb-1">Quantité disponible</label>
@@ -164,26 +169,17 @@ function ImagesSection({ product, onChanged }: { product: SerializedProduct; onC
       <h2 className="font-display font-bold text-lg text-[var(--color-navy)] mb-4">Photos</h2>
 
       {product.images.length > 0 && (
-        <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mb-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-4">
           {product.images.map((img) => (
-            <div key={img.id} className="relative aspect-square rounded-lg overflow-hidden bg-[var(--color-cream-dark)] group">
-              <Image src={img.url} alt={img.alt || product.name} fill sizes="150px" className="object-cover" />
-              {img.isMain && (
-                <span className="absolute top-1 left-1 bg-[var(--color-gold)] text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
-                  Principale
-                </span>
-              )}
-              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 transition-opacity">
-                {!img.isMain && (
-                  <button onClick={() => setMain(img.id)} className="text-white text-xs font-semibold underline">
-                    Définir principale
-                  </button>
-                )}
-                <button onClick={() => deleteImage(img.id)} className="text-white text-xs font-semibold underline">
-                  Supprimer
-                </button>
-              </div>
-            </div>
+            <ImageThumb
+              key={img.id}
+              productId={product.id}
+              image={img}
+              productName={product.name}
+              onSetMain={() => setMain(img.id)}
+              onDelete={() => deleteImage(img.id)}
+              onChanged={onChanged}
+            />
           ))}
         </div>
       )}
@@ -197,6 +193,84 @@ function ImagesSection({ product, onChanged }: { product: SerializedProduct; onC
         Ajoutez plusieurs photos (devant, côté, arrière...). La première photo ajoutée devient l&apos;image principale.
       </p>
     </section>
+  );
+}
+
+function ImageThumb({
+  productId,
+  image,
+  productName,
+  onSetMain,
+  onDelete,
+  onChanged,
+}: {
+  productId: string;
+  image: SerializedProduct["images"][number];
+  productName: string;
+  onSetMain: () => void;
+  onDelete: () => void;
+  onChanged: () => void;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [alt, setAlt] = useState(image.alt);
+  const [saving, setSaving] = useState(false);
+
+  const saveAlt = async () => {
+    setSaving(true);
+    await fetch(`/api/admin/products/${productId}/images/${image.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ alt }),
+    });
+    setSaving(false);
+    setEditing(false);
+    onChanged();
+  };
+
+  return (
+    <div className="rounded-lg overflow-hidden bg-[var(--color-cream-dark)] border border-[var(--color-navy)]/10">
+      <div className="relative aspect-square group">
+        <Image src={image.url} alt={image.alt || productName} fill sizes="200px" className="object-cover" />
+        {image.isMain && (
+          <span className="absolute top-1 left-1 bg-[var(--color-gold)] text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
+            Principale
+          </span>
+        )}
+        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 transition-opacity">
+          {!image.isMain && (
+            <button onClick={onSetMain} className="text-white text-xs font-semibold underline">
+              Définir principale
+            </button>
+          )}
+          <button onClick={onDelete} className="text-white text-xs font-semibold underline">
+            Supprimer
+          </button>
+        </div>
+      </div>
+      <div className="p-2">
+        {editing ? (
+          <div className="flex gap-1">
+            <input
+              value={alt}
+              onChange={(e) => setAlt(e.target.value)}
+              placeholder="Légende de la photo"
+              className="w-full rounded border border-[var(--color-navy)]/20 px-2 py-1 text-xs"
+            />
+            <button onClick={saveAlt} disabled={saving} className="text-xs font-semibold text-[var(--color-gold-dark)] shrink-0">
+              OK
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => setEditing(true)}
+            className="w-full text-left text-xs text-[var(--color-navy)]/60 truncate hover:text-[var(--color-navy)]"
+            title="Modifier la légende de cette photo"
+          >
+            {image.alt || "Ajouter une légende..."}
+          </button>
+        )}
+      </div>
+    </div>
   );
 }
 

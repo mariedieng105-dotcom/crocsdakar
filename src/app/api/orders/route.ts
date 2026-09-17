@@ -60,6 +60,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (product.price === null) {
+      return NextResponse.json(
+        { error: `Le prix de "${product.name}" n'est pas encore confirmé, cette commande ne peut pas être passée.` },
+        { status: 400 }
+      );
+    }
+
     const lineTotal = product.price * item.quantity;
     orderItemsData.push({
       productId: product.id,

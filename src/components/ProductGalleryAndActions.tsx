@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/components/CartProvider";
-import { formatFCFA } from "@/lib/shop";
+import { formatPrice } from "@/lib/shop";
 import type { SerializedProduct } from "@/lib/serialize";
 
 export default function ProductGalleryAndActions({ product }: { product: SerializedProduct }) {
@@ -18,9 +18,12 @@ export default function ProductGalleryAndActions({ product }: { product: Seriali
 
   const images = product.images.length > 0 ? product.images : [];
   const activeImage = images[activeImageIndex];
-  const canOrder = product.available && product.sizes.some((s) => s.available);
+  const priceConfirmed = product.price !== null;
+  const canOrder = product.available && priceConfirmed && product.sizes.some((s) => s.available);
 
   const handleAddToCart = () => {
+    const price = product.price;
+    if (price === null) return;
     if (!selectedSize) {
       setFeedback("Veuillez sélectionner une pointure.");
       return;
@@ -30,7 +33,7 @@ export default function ProductGalleryAndActions({ product }: { product: Seriali
       slug: product.slug,
       name: product.name,
       model: product.model,
-      price: product.price,
+      price,
       image: activeImage?.url ?? null,
       size: selectedSize,
       quantity,
@@ -39,6 +42,8 @@ export default function ProductGalleryAndActions({ product }: { product: Seriali
   };
 
   const handleBuyNow = () => {
+    const price = product.price;
+    if (price === null) return;
     if (!selectedSize) {
       setFeedback("Veuillez sélectionner une pointure.");
       return;
@@ -48,7 +53,7 @@ export default function ProductGalleryAndActions({ product }: { product: Seriali
       slug: product.slug,
       name: product.name,
       model: product.model,
-      price: product.price,
+      price,
       image: activeImage?.url ?? null,
       size: selectedSize,
       quantity,
@@ -91,6 +96,9 @@ export default function ProductGalleryAndActions({ product }: { product: Seriali
             ))}
           </div>
         )}
+        {activeImage?.alt && (
+          <p className="mt-2 text-center text-sm text-[var(--color-navy)]/60">{activeImage.alt}</p>
+        )}
       </div>
 
       <div>
@@ -98,9 +106,20 @@ export default function ProductGalleryAndActions({ product }: { product: Seriali
           {product.model}
         </p>
         <h1 className="font-display font-bold text-2xl sm:text-3xl text-[var(--color-navy)] mb-2">{product.name}</h1>
-        <p className="font-display font-bold text-2xl text-[var(--color-navy)] mb-4">{formatFCFA(product.price)}</p>
+        <p
+          className={`font-display font-bold mb-4 ${
+            priceConfirmed ? "text-2xl text-[var(--color-navy)]" : "text-lg text-[var(--color-navy)]/60"
+          }`}
+        >
+          {formatPrice(product.price)}
+        </p>
 
-        {!canOrder && (
+        {!priceConfirmed && (
+          <p className="inline-block mb-4 bg-amber-50 text-amber-700 text-sm font-medium px-3 py-1.5 rounded-full">
+            Le prix de ce modèle n&apos;est pas encore confirmé par la boutique — commande indisponible pour le moment.
+          </p>
+        )}
+        {priceConfirmed && !canOrder && (
           <p className="inline-block mb-4 bg-red-50 text-red-700 text-sm font-medium px-3 py-1.5 rounded-full">
             Ce produit n&apos;est actuellement pas disponible.
           </p>

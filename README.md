@@ -44,7 +44,8 @@ Next.js) et une pour les variables d'environnement Vercel (sans échappement).
 
 | Variable | Description |
 |---|---|
-| `DATABASE_URL` | URL de connexion PostgreSQL |
+| `DATABASE_URL` | URL de connexion PostgreSQL (pooled, utilisée par l'application) |
+| `DIRECT_URL` | URL de connexion PostgreSQL directe, sans pooler (utilisée uniquement par `prisma migrate deploy` au build) |
 | `ADMIN_EMAIL` | Email de connexion à l'administration |
 | `ADMIN_PASSWORD_HASH` | Hash bcrypt du mot de passe admin (jamais en clair) |
 | `AUTH_SECRET` | Chaîne aléatoire longue, signe les sessions admin (`openssl rand -base64 48`) |
@@ -91,7 +92,14 @@ Voir `.env.example` pour le détail.
    variables d'environnement du projet.
 4. Ajouter les autres variables d'environnement dans **Settings →
    Environment Variables** :
-   - `DATABASE_URL` (fournie par Neon/Supabase)
+   - `DATABASE_URL` : la connexion **pooled** fournie par Neon/Supabase
+     (contient généralement `-pooler` dans le nom d'hôte sur Neon)
+   - `DIRECT_URL` : la connexion **directe**, sans pooler. Sur Neon, dans
+     l'écran "Connect", désactivez le bouton "Pooled connection" pour
+     l'obtenir (même hôte mais sans `-pooler`). **Obligatoire** : sans cette
+     variable, `prisma migrate deploy` échoue au build avec l'erreur
+     `P1002` (timeout sur `pg_advisory_lock`), car les connexions poolées
+     via PgBouncer ne supportent pas le verrou de migration de Prisma.
    - `ADMIN_EMAIL`
    - `ADMIN_PASSWORD_HASH` (généré avec `scripts/hash-password.js`, version
      **sans** `\$`)
@@ -99,13 +107,9 @@ Voir `.env.example` pour le détail.
    - `NEXT_PUBLIC_SITE_URL` (l'URL de votre déploiement, ex.
      `https://crocsdakar.vercel.app`)
    - `NEXT_PUBLIC_WHATSAPP_NUMBER`
-5. Appliquer les migrations sur la base de production, en local :
-   ```bash
-   DATABASE_URL="<url-de-production>" npx prisma migrate deploy
-   ```
-6. Déployer (Vercel construit automatiquement avec `npm run build`, et
-   `postinstall` lance `prisma generate`).
-7. Ouvrir `https://votre-domaine.vercel.app/admin/login` et ajouter vos
+5. Déployer (Vercel construit automatiquement avec `npm run build`, qui
+   applique les migrations via `prisma migrate deploy` avant `next build`).
+6. Ouvrir `https://votre-domaine.vercel.app/admin/login` et ajouter vos
    premiers produits (avec leurs vraies photos).
 
 ## Logo et photos produits

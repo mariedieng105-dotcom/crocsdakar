@@ -44,21 +44,13 @@ export default function Header() {
 
         <Link href="/" className="flex items-center gap-2 shrink-0" aria-label={`${SHOP.siteName} - Accueil`}>
           <Image
-            src="/images/logo-placeholder.svg"
+            src="/images/logo.jpg"
             alt={`Logo ${SHOP.siteName} - ${SHOP.storeName}`}
-            width={44}
-            height={44}
+            width={160}
+            height={87}
             priority
-            className="rounded-full"
+            className="h-12 w-auto object-contain"
           />
-          <span className="hidden sm:flex flex-col leading-tight">
-            <span className="font-display font-bold text-lg tracking-wide text-[var(--color-navy)]">
-              {SHOP.siteName.toUpperCase()}
-            </span>
-            <span className="text-[10px] tracking-[0.2em] text-[var(--color-gold-dark)] font-semibold">
-              {SHOP.storeName.toUpperCase()}
-            </span>
-          </span>
         </Link>
 
         <nav className="hidden lg:flex items-center gap-6 ml-6">

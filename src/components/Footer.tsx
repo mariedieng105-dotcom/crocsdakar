@@ -7,18 +7,14 @@ export default function Footer() {
     <footer id="contact" className="mt-16 bg-[var(--color-navy)] text-[var(--color-cream)]">
       <div className="container-shop py-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <div className="flex items-center gap-3 mb-4">
+          <div className="mb-4 inline-block rounded-xl bg-[var(--color-cream)] p-2">
             <Image
-              src="/images/logo-placeholder.svg"
+              src="/images/logo.jpg"
               alt={`Logo ${SHOP.siteName} - ${SHOP.storeName}`}
-              width={48}
-              height={48}
-              className="rounded-full bg-white/5"
+              width={160}
+              height={87}
+              className="h-14 w-auto object-contain"
             />
-            <div>
-              <p className="font-display font-bold tracking-wide">{SHOP.siteName.toUpperCase()}</p>
-              <p className="text-xs tracking-[0.15em] text-[var(--color-gold)]">{SHOP.storeName.toUpperCase()}</p>
-            </div>
           </div>
           <p className="text-sm text-white/70 italic">&ldquo;{SHOP.tagline}&rdquo;</p>
           <p className="text-sm text-white/60 mt-3">

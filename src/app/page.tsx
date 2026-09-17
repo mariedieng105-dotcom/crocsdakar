@@ -64,14 +64,16 @@ export default async function Home() {
             </div>
           </div>
           <div className="flex justify-center animate-fade-in-up">
-            <Image
-              src="/images/logo-placeholder.svg"
-              alt={`${SHOP.siteName} - ${SHOP.storeName}`}
-              width={320}
-              height={320}
-              priority
-              className="rounded-full bg-white/5 p-6 max-w-full h-auto"
-            />
+            <div className="rounded-3xl bg-[var(--color-cream)] p-4 sm:p-6 max-w-sm w-full card-shadow">
+              <Image
+                src="/images/logo.jpg"
+                alt={`${SHOP.siteName} - ${SHOP.storeName}`}
+                width={640}
+                height={347}
+                priority
+                className="w-full h-auto rounded-2xl"
+              />
+            </div>
           </div>
         </div>
       </section>

@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     title: `${SHOP.siteName} — Crocs originaux à Dakar | ${SHOP.storeName}`,
     description:
       "Découvrez les Crocs disponibles chez Diaby Store à Dakar. Choisissez votre modèle et votre pointure, commandez en ligne, paiement à la livraison.",
-    images: ["/images/logo-placeholder.svg"],
+    images: ["/images/logo.jpg"],
   },
   twitter: {
     card: "summary",

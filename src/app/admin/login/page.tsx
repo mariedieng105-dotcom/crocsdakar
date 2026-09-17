@@ -45,7 +45,7 @@ function LoginForm() {
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-sm bg-white rounded-2xl card-shadow p-8">
         <div className="flex flex-col items-center mb-6">
-          <Image src="/images/logo-placeholder.svg" alt={SHOP.siteName} width={56} height={56} className="rounded-full mb-2" />
+          <Image src="/images/logo.jpg" alt={SHOP.siteName} width={160} height={87} className="h-14 w-auto object-contain mb-2" />
           <h1 className="font-display font-bold text-lg text-[var(--color-navy)]">Administration</h1>
           <p className="text-xs text-[var(--color-navy)]/50">{SHOP.siteName} · {SHOP.storeName}</p>
         </div>

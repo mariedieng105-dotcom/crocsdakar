@@ -110,12 +110,10 @@ Voir `.env.example` pour le détail.
 
 ## Logo et photos produits
 
-Le logo fourni n'a pas pu être récupéré automatiquement dans ce dépôt
-(fichier image non transmis en tant que fichier). Un espace réservé se
-trouve dans `public/images/logo-placeholder.svg` ; voir
-`public/images/LISEZ-MOI.txt` pour les instructions de remplacement par le
-vrai logo. Il en va de même pour les photos produits : le catalogue démarre
-vide et se remplit entièrement depuis `/admin`.
+Le logo officiel est dans `public/images/logo.jpg`, utilisé dans le header,
+le footer, la page d'accueil et la page de connexion admin. Les photos
+produits ne sont pas fournies dans le dépôt : le catalogue démarre vide et
+se remplit entièrement depuis `/admin`.
 
 ## SEO
 

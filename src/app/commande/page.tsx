@@ -70,7 +70,6 @@ export default function CheckoutPage() {
   const [customerName, setCustomerName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const [zone, setZone] = useState("");
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -146,7 +145,6 @@ export default function CheckoutPage() {
           customerName,
           phone,
           address,
-          zone: zone || undefined,
           notes: notes || undefined,
           items: items.map((i) => ({
             productId: i.productId,
@@ -221,18 +219,7 @@ export default function CheckoutPage() {
               autoComplete="street-address"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              className={FIELD_CLASS}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="zone" className="cd-eyebrow text-[0.62rem] text-[var(--cd-ink-faint)] block mb-2">
-              Quartier ou zone
-            </label>
-            <input
-              id="zone"
-              value={zone}
-              onChange={(e) => setZone(e.target.value)}
+              placeholder="Quartier, rue, point de repère"
               className={FIELD_CLASS}
             />
           </div>

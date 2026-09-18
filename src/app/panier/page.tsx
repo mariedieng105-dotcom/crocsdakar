@@ -136,9 +136,8 @@ export default function CartPage() {
             </div>
           </dl>
 
-          <p className="text-xs text-[var(--cd-ink-soft)] mt-5 leading-relaxed">
-            Les frais de livraison dépendent de votre adresse et vous sont confirmés sur WhatsApp
-            avant l&rsquo;expédition. Vous payez à la réception.
+          <p className="text-xs text-[var(--cd-ink-soft)] mt-5">
+            Livraison confirmée sur WhatsApp. Paiement à la réception.
           </p>
 
           <Link href="/commande" className="cd-btn cd-btn--solid w-full mt-6">

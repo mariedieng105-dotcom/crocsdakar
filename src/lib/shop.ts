@@ -18,7 +18,6 @@ export const PRICE_TBD_LABEL = "Prix à confirmer";
 export const NAV_LINKS = [
   { href: "/", label: "Accueil" },
   { href: "/catalogue", label: "Boutique" },
-  { href: "/catalogue?sort=newest", label: "Nouveautés" },
   { href: "/a-propos", label: "À propos" },
   { href: "/#contact", label: "Contact" },
 ];

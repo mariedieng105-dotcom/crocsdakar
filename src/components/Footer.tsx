@@ -1,14 +1,6 @@
 import Link from "next/link";
-import { SHOP, whatsappLink } from "@/lib/shop";
+import { SHOP, NAV_LINKS, whatsappLink } from "@/lib/shop";
 import { PinIcon, WhatsAppGlyph } from "@/components/Icons";
-
-const QUICK_LINKS = [
-  { href: "/", label: "Accueil" },
-  { href: "/catalogue", label: "Boutique" },
-  { href: "/catalogue?sort=newest", label: "Nouveautés" },
-  { href: "/a-propos", label: "À propos" },
-  { href: "/#contact", label: "Contact" },
-];
 
 const SOCIAL = [
   { href: SHOP.instagram, label: "Instagram" },
@@ -68,7 +60,7 @@ export default function Footer() {
           <nav aria-label="Liens rapides">
             <h2 className="cd-eyebrow text-[var(--cd-gold-500)] mb-4">Liens rapides</h2>
             <ul className="space-y-2.5 text-sm">
-              {QUICK_LINKS.map((link) => (
+              {NAV_LINKS.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}

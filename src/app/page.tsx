@@ -5,7 +5,7 @@ import Hero from "@/components/Hero";
 import CategoryGrid, { type FamilyTile } from "@/components/CategoryGrid";
 import ProductRow from "@/components/ProductRow";
 import BrandBlock from "@/components/BrandBlock";
-import TrustBar from "@/components/TrustBar";
+import WhatsAppBlock from "@/components/WhatsAppBlock";
 
 export const revalidate = 60;
 
@@ -37,11 +37,11 @@ async function getHomeData() {
   });
 
   return {
-    newArrivals: serialized.slice(0, 8),
+    newArrivals: serialized.slice(0, 4),
     // Les best-sellers ne sont pas encore mesurés : on met en avant les
     // Classic, qui sont le cœur du catalogue, en attendant des ventes à
     // compter.
-    bestSellers: serialized.filter((p) => familyOf(p.slug) === "classiques").slice(0, 8),
+    bestSellers: serialized.filter((p) => familyOf(p.slug) === "classiques").slice(0, 4),
     tiles,
     isEmpty: serialized.length === 0,
   };
@@ -68,26 +68,25 @@ export default async function Home() {
           <CategoryGrid tiles={tiles} />
 
           <ProductRow
-            title="Nouvelle collection"
-            subtitle="Les derniers modèles, tout droit arrivés."
-            href="/catalogue?sort=newest"
-            linkLabel="Voir toutes les nouveautés"
+            title="Nouveautés"
+            href="/catalogue"
+            linkLabel="Voir la boutique"
             products={newArrivals}
             priority
           />
 
-          <BrandBlock />
-
           <ProductRow
-            title="Nos best-sellers"
-            subtitle="Les modèles les plus demandés."
+            title="Best-sellers"
             href="/catalogue"
+            linkLabel="Voir la boutique"
             products={bestSellers}
           />
+
+          <BrandBlock />
         </>
       )}
 
-      <TrustBar />
+      <WhatsAppBlock />
     </>
   );
 }

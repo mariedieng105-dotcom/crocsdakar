@@ -27,18 +27,15 @@ export default async function AdminProductsPage() {
         </Link>
       </div>
 
-      {toClassify > 0 && (
+      {(toClassify > 0 || hidden > 0) && (
         <p className="cd-ad-note cd-ad-note--warn mt-6">
-          {toClassify} produit{toClassify > 1 ? "s" : ""} encore à classer. Tant qu&apos;un produit
-          est « à classer », il n&apos;apparaît dans aucune catégorie de la boutique. Choisissez sa
-          catégorie directement dans la colonne « Catégorie » ci-dessous.
-        </p>
-      )}
-
-      {hidden > 0 && (
-        <p className="cd-ad-note mt-3">
-          {hidden} produit{hidden > 1 ? "s sont masqués" : " est masqué"} de la boutique.
-          Un produit masqué reste en base et se réaffiche en un clic sur « Masqué ».
+          {[
+            toClassify > 0 ? `${toClassify} produit${toClassify > 1 ? "s" : ""} à classer` : null,
+            hidden > 0 ? `${hidden} produit${hidden > 1 ? "s masqués" : " masqué"}` : null,
+          ]
+            .filter(Boolean)
+            .join(" · ")}{" "}
+          — à ajuster directement dans le tableau ci-dessous.
         </p>
       )}
 

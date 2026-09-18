@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
 import { FAMILIES, isFamilyKey } from "@/lib/families";
-import { PUBLIC_CATEGORIES, categoryLabel, categorySlug } from "@/lib/categories";
 import { CloseIcon, SearchIcon } from "@/components/Icons";
 import type { SerializedProduct } from "@/lib/serialize";
 
@@ -20,27 +19,17 @@ const SIZE_OPTIONS = [
   "45-46",
 ];
 
-const SORT_OPTIONS = [
-  { value: "newest", label: "Nouveautés" },
-  { value: "price_asc", label: "Prix croissant" },
-  { value: "price_desc", label: "Prix décroissant" },
-];
-
 type Filters = {
   q: string;
   famille: string;
-  categorie: string;
   size: string;
-  sort: string;
 };
 
 function buildQuery(filters: Filters): string {
   const params = new URLSearchParams();
   if (filters.q) params.set("q", filters.q);
   if (filters.famille) params.set("famille", filters.famille);
-  if (filters.categorie) params.set("categorie", filters.categorie);
   if (filters.size) params.set("size", filters.size);
-  if (filters.sort && filters.sort !== "newest") params.set("sort", filters.sort);
   return params.toString();
 }
 
@@ -51,9 +40,7 @@ export default function CatalogueClient() {
   const [filters, setFilters] = useState<Filters>({
     q: searchParams.get("q") || "",
     famille: isFamilyKey(searchParams.get("famille")) ? searchParams.get("famille")! : "",
-    categorie: searchParams.get("categorie") || "",
     size: searchParams.get("size") || "",
-    sort: searchParams.get("sort") || "newest",
   });
 
   const [products, setProducts] = useState<SerializedProduct[]>([]);
@@ -85,23 +72,15 @@ export default function CatalogueClient() {
     return () => clearTimeout(handle);
   }, [query, router]);
 
-  const activeCount =
-    (filters.q ? 1 : 0) +
-    (filters.famille ? 1 : 0) +
-    (filters.categorie ? 1 : 0) +
-    (filters.size ? 1 : 0);
+  const activeCount = (filters.q ? 1 : 0) + (filters.famille ? 1 : 0) + (filters.size ? 1 : 0);
 
-  const reset = () =>
-    setFilters({ q: "", famille: "", categorie: "", size: "", sort: "newest" });
+  const reset = () => setFilters({ q: "", famille: "", size: "" });
 
   return (
     <div className="cd-container py-10 sm:py-14">
       <header className="mb-8">
         <p className="cd-eyebrow text-[var(--cd-gold-700)]">Boutique</p>
         <h1 className="cd-display cd-display-l mt-3">Tous les modèles</h1>
-        <p className="cd-lead mt-3">
-          Cherchez un modèle, filtrez par famille ou par pointure, et commandez en quelques clics.
-        </p>
       </header>
 
       <div className="flex flex-col gap-5 pb-6 border-b border-[var(--cd-rule)]">
@@ -120,9 +99,9 @@ export default function CatalogueClient() {
           />
         </div>
 
-        <FilterRow label="Famille">
+        <div className="flex flex-wrap gap-2">
           <Chip active={!filters.famille} onClick={() => set("famille", "")}>
-            Toutes
+            Tout
           </Chip>
           {FAMILIES.map((family) => (
             <Chip
@@ -133,25 +112,7 @@ export default function CatalogueClient() {
               {family.label}
             </Chip>
           ))}
-        </FilterRow>
-
-        <FilterRow label="Catégorie">
-          <Chip active={!filters.categorie} onClick={() => set("categorie", "")}>
-            Toutes
-          </Chip>
-          {PUBLIC_CATEGORIES.map((category) => {
-            const slug = categorySlug(category);
-            return (
-              <Chip
-                key={category}
-                active={filters.categorie === slug}
-                onClick={() => set("categorie", filters.categorie === slug ? "" : slug)}
-              >
-                {categoryLabel(category)}
-              </Chip>
-            );
-          })}
-        </FilterRow>
+        </div>
 
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
           <div className="flex items-center gap-2.5">
@@ -168,24 +129,6 @@ export default function CatalogueClient() {
               {SIZE_OPTIONS.map((s) => (
                 <option key={s} value={s}>
                   {s}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="flex items-center gap-2.5">
-            <label htmlFor="catalogue-sort" className="cd-eyebrow text-[0.62rem] text-[var(--cd-ink-faint)]">
-              Trier
-            </label>
-            <select
-              id="catalogue-sort"
-              value={filters.sort}
-              onChange={(e) => set("sort", e.target.value)}
-              className="border border-[var(--cd-rule)] bg-transparent px-3 py-2 text-sm"
-            >
-              {SORT_OPTIONS.map((o) => (
-                <option key={o.value} value={o.value}>
-                  {o.label}
                 </option>
               ))}
             </select>
@@ -231,17 +174,6 @@ export default function CatalogueClient() {
           </div>
         )
       )}
-    </div>
-  );
-}
-
-function FilterRow({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div className="flex items-start gap-3">
-      <span className="cd-eyebrow text-[0.62rem] text-[var(--cd-ink-faint)] pt-2.5 w-[4.5rem] shrink-0">
-        {label}
-      </span>
-      <div className="flex flex-wrap gap-2">{children}</div>
     </div>
   );
 }

@@ -3,7 +3,6 @@ import { Archivo, Karla, Caveat } from "next/font/google";
 import "./globals.css";
 import { SHOP } from "@/lib/shop";
 import { CartProvider } from "@/components/CartProvider";
-import AnnouncementBar from "@/components/AnnouncementBar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppFloatingButton from "@/components/WhatsAppFloatingButton";
@@ -98,7 +97,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <CartProvider>
           <StorefrontOnly>
-            <AnnouncementBar />
             <Header />
           </StorefrontOnly>
           <main className="flex-1 flex flex-col">{children}</main>

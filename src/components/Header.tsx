@@ -139,17 +139,6 @@ export default function Header() {
             )}
           </Link>
 
-          <a
-            href={whatsappLink(
-              `Bonjour ${SHOP.storeName}, je souhaite des renseignements sur vos Crocs.`
-            )}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden xl:inline-flex cd-btn cd-btn--solid !py-3 !px-5 !text-[0.68rem] ml-2"
-          >
-            <WhatsAppGlyph className="w-4 h-4" />
-            Commander sur WhatsApp
-          </a>
         </div>
       </div>
 

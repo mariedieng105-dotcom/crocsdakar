@@ -2,13 +2,9 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useCart } from "@/components/CartProvider";
 import { SHOP, formatPriceShort, formatFCFA, whatsappLink } from "@/lib/shop";
-import { familyOf, familyLabel } from "@/lib/families";
-import { REASSURANCE } from "@/lib/shop";
-import { REASSURANCE_ICONS, WhatsAppGlyph, ArrowRightIcon } from "@/components/Icons";
+import { WhatsAppGlyph } from "@/components/Icons";
 import { SINGLE_SIZE_LABEL } from "@/lib/cart-types";
 import type { SerializedProduct } from "@/lib/serialize";
 
@@ -18,7 +14,6 @@ export default function ProductGalleryAndActions({ product }: { product: Seriali
   const [quantity, setQuantity] = useState(1);
   const [feedback, setFeedback] = useState<string | null>(null);
   const { addItem } = useCart();
-  const router = useRouter();
 
   const images = product.images;
   const activeImage = images[activeIndex];
@@ -58,13 +53,6 @@ export default function ProductGalleryAndActions({ product }: { product: Seriali
     setFeedback("Ajouté au panier.");
   };
 
-  const handleBuyNow = () => {
-    const item = buildItem();
-    if (!item) return;
-    addItem(item);
-    router.push("/panier");
-  };
-
   const askOnWhatsapp = whatsappLink(
     `Bonjour ${SHOP.storeName}, je suis intéressé(e) par « ${product.name} » (${product.model})` +
       (priceConfirmed ? `, à ${formatFCFA(product.price!)}.` : ". Quel est son prix ?")
@@ -72,19 +60,6 @@ export default function ProductGalleryAndActions({ product }: { product: Seriali
 
   return (
     <div className="cd-container py-6 sm:py-10">
-      <nav aria-label="Fil d'Ariane" className="cd-eyebrow text-[0.6rem] text-[var(--cd-ink-faint)] mb-6 flex flex-wrap items-center gap-2">
-        <Link href="/" className="hover:text-[var(--cd-gold-700)]">Accueil</Link>
-        <span aria-hidden="true">/</span>
-        <Link href="/catalogue" className="hover:text-[var(--cd-gold-700)]">Boutique</Link>
-        <span aria-hidden="true">/</span>
-        <Link
-          href={`/catalogue?famille=${familyOf(product.slug)}`}
-          className="hover:text-[var(--cd-gold-700)]"
-        >
-          {familyLabel(familyOf(product.slug))}
-        </Link>
-      </nav>
-
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-14">
         <div className="min-w-0">
           <div className="cd-tile !aspect-[4/5] sm:!aspect-square">
@@ -252,41 +227,16 @@ export default function ProductGalleryAndActions({ product }: { product: Seriali
             >
               Ajouter au panier
             </button>
-            <button
-              type="button"
-              onClick={handleBuyNow}
-              disabled={!canOrder}
-              className="cd-btn cd-btn--ghost"
+            <a
+              href={askOnWhatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cd-btn cd-btn--whatsapp"
             >
-              Commander
-              <ArrowRightIcon className="w-4 h-4" />
-            </button>
+              <WhatsAppGlyph className="w-4 h-4" />
+              {priceConfirmed ? "Commander sur WhatsApp" : "Demander le prix"}
+            </a>
           </div>
-
-          <a
-            href={askOnWhatsapp}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cd-btn cd-btn--whatsapp w-full mt-3"
-          >
-            <WhatsAppGlyph className="w-4 h-4" />
-            {priceConfirmed ? "Poser une question" : "Demander le prix"}
-          </a>
-
-          <ul className="grid grid-cols-2 gap-x-5 gap-y-4 mt-9 pt-7 border-t border-[var(--cd-rule)]">
-            {REASSURANCE.map((item) => {
-              const Icon = REASSURANCE_ICONS[item.icon];
-              return (
-                <li key={item.title} className="flex items-center gap-2.5">
-                  <Icon className="w-5 h-5 shrink-0 text-[var(--cd-navy-700)]" />
-                  <span className="text-[0.8rem] leading-tight">
-                    <span className="block font-semibold">{item.title}</span>
-                    <span className="text-[var(--cd-ink-soft)]">{item.detail}</span>
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
         </div>
       </div>
     </div>

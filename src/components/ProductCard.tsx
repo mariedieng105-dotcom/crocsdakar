@@ -1,48 +1,68 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatPrice } from "@/lib/shop";
+import { formatPriceShort } from "@/lib/shop";
 import type { SerializedProduct } from "@/lib/serialize";
 
-export default function ProductCard({ product }: { product: SerializedProduct }) {
+/**
+ * Carte produit éditoriale : la photo est posée sur une tuile crème en
+ * `contain`, ce qui met au même format des visuels officiels sur fond blanc et
+ * des photos prises en boutique. Le texte vit sur le fond de page, sans carte
+ * ni ombre, pour une lecture de lookbook plutôt que de catalogue.
+ */
+export default function ProductCard({
+  product,
+  priority = false,
+}: {
+  product: SerializedProduct;
+  priority?: boolean;
+}) {
   const mainImage = product.images[0];
-  const hasAvailableSize = product.sizes.some((s) => s.available);
+  // Un produit sans aucune pointure déclarée est un accessoire (jibbitz), pas
+  // un modèle en rupture : seules les pointures existantes comptent.
+  const sizesKnown = product.sizes.length > 0;
+  const soldOut =
+    !product.available || (sizesKnown && !product.sizes.some((s) => s.available));
 
   return (
-    <Link
-      href={`/produit/${product.slug}`}
-      className="group flex flex-col rounded-2xl overflow-hidden bg-white card-shadow hover:-translate-y-1 transition-transform duration-200"
-    >
-      <div className="relative aspect-square bg-[var(--color-cream-dark)]">
+    <Link href={`/produit/${product.slug}`} className="cd-card group block">
+      <div className="cd-tile">
         {mainImage ? (
           <Image
             src={mainImage.url}
             alt={mainImage.alt || product.name}
             fill
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            priority={priority}
+            sizes="(max-width: 560px) 63vw, (max-width: 900px) 38vw, 24vw"
+            className="object-cover"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-[var(--color-navy)]/30 text-sm">
+          <span className="absolute inset-0 flex items-center justify-center text-sm text-[var(--cd-ink-faint)]">
             Photo à venir
-          </div>
-        )}
-        {!product.available || !hasAvailableSize ? (
-          <span className="absolute top-2 left-2 bg-[var(--color-navy)] text-white text-[11px] font-semibold px-2.5 py-1 rounded-full">
-            Indisponible
           </span>
-        ) : null}
+        )}
+
+        {soldOut && (
+          <span className="cd-eyebrow absolute top-3 left-3 bg-[var(--cd-navy-800)] text-white text-[0.6rem] px-2.5 py-1.5">
+            Épuisé
+          </span>
+        )}
       </div>
-      <div className="p-3 sm:p-4 flex flex-col gap-1">
-        <p className="text-[11px] uppercase tracking-wide text-[var(--color-gold-dark)] font-semibold">
+
+      <div className="pt-3.5">
+        <p className="cd-eyebrow text-[0.6rem] text-[var(--cd-gold-700)] truncate">
           {product.model}
         </p>
-        <h3 className="font-semibold text-[var(--color-navy)] leading-snug line-clamp-2">{product.name}</h3>
+        <h3 className="mt-1.5 font-semibold leading-snug line-clamp-2">
+          <span className="cd-link-underline">{product.name}</span>
+        </h3>
         <p
-          className={`font-display font-bold ${
-            product.price === null ? "text-[var(--color-navy)]/50 text-sm" : "text-[var(--color-navy)]"
+          className={`cd-num mt-1 ${
+            product.price === null
+              ? "text-sm text-[var(--cd-ink-faint)]"
+              : "font-semibold"
           }`}
         >
-          {formatPrice(product.price)}
+          {formatPriceShort(product.price)}
         </p>
       </div>
     </Link>

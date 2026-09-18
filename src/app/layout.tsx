@@ -1,21 +1,31 @@
 import type { Metadata } from "next";
-import { Poppins, Inter } from "next/font/google";
+import { Archivo, Karla, Caveat } from "next/font/google";
 import "./globals.css";
 import { SHOP } from "@/lib/shop";
 import { CartProvider } from "@/components/CartProvider";
+import AnnouncementBar from "@/components/AnnouncementBar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppFloatingButton from "@/components/WhatsAppFloatingButton";
 
-const displayFont = Poppins({
-  variable: "--font-display",
+// Archivo pour les titres en capitales, Karla pour le texte courant,
+// Caveat pour les signatures manuscrites de la direction artistique.
+const displayFont = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
+  weight: ["600", "700", "800"],
 });
 
-const bodyFont = Inter({
-  variable: "--font-body",
+const bodyFont = Karla({
+  variable: "--font-karla",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const scriptFont = Caveat({
+  variable: "--font-caveat",
+  subsets: ["latin"],
+  weight: ["600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -78,14 +88,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="fr"
-      className={`${displayFont.variable} ${bodyFont.variable} h-full antialiased`}
+      className={`${displayFont.variable} ${bodyFont.variable} ${scriptFont.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[var(--color-cream)] font-sans text-[var(--color-navy)]">
+      <body className="min-h-full flex flex-col">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
         <CartProvider>
+          <AnnouncementBar />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />

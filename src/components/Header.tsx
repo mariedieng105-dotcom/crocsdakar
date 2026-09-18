@@ -2,137 +2,218 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useCart } from "@/components/CartProvider";
-import { SHOP } from "@/lib/shop";
+import { SHOP, NAV_LINKS, whatsappLink } from "@/lib/shop";
+import {
+  SearchIcon,
+  BagIcon,
+  MenuIcon,
+  CloseIcon,
+  WhatsAppGlyph,
+  ArrowRightIcon,
+} from "@/components/Icons";
 
-const NAV_LINKS = [
-  { href: "/", label: "Accueil" },
-  { href: "/catalogue", label: "Catalogue" },
-  { href: "/catalogue?sort=newest", label: "Nouveautés" },
-  { href: "/#contact", label: "Contact" },
-];
+function isActive(pathname: string, href: string): boolean {
+  if (href === "/") return pathname === "/";
+  const path = href.split("?")[0].split("#")[0];
+  return path !== "/" && pathname.startsWith(path);
+}
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const { itemCount } = useCart();
   const pathname = usePathname();
   const router = useRouter();
+
+  const closePanels = () => {
+    setMenuOpen(false);
+    setSearchOpen(false);
+  };
+
+  useEffect(() => {
+    if (searchOpen) searchInputRef.current?.focus();
+  }, [searchOpen]);
+
+  useEffect(() => {
+    if (!menuOpen && !searchOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        setSearchOpen(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen, searchOpen]);
 
   const submitSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const q = search.trim();
     router.push(q ? `/catalogue?q=${encodeURIComponent(q)}` : "/catalogue");
+    setSearchOpen(false);
     setMenuOpen(false);
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-[var(--color-cream)]/95 backdrop-blur border-b border-[var(--color-gold)]/30">
-      <div className="container-shop flex items-center gap-4 py-3">
+    <header className="sticky top-0 z-40 bg-[var(--cd-bg)]/95 backdrop-blur-sm border-b border-[var(--cd-rule)]">
+      <div className="cd-container flex items-center gap-3 sm:gap-5 h-[68px] sm:h-[84px]">
         <button
-          className="lg:hidden p-2 -ml-2 text-[var(--color-navy)]"
-          aria-label="Ouvrir le menu"
+          type="button"
+          className="lg:hidden -ml-2 p-2 text-[var(--cd-navy-800)]"
+          aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
           aria-expanded={menuOpen}
-          onClick={() => setMenuOpen((v) => !v)}
+          onClick={() => {
+            setMenuOpen((v) => !v);
+            setSearchOpen(false);
+          }}
         >
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path strokeLinecap="round" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
+          {menuOpen ? <CloseIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
         </button>
 
-        <Link href="/" className="flex items-center gap-2 shrink-0" aria-label={`${SHOP.siteName} - Accueil`}>
+        <Link
+          href="/"
+          className="shrink-0"
+          aria-label={`${SHOP.siteName} — Accueil`}
+        >
           <Image
-            src="/images/logo.jpg"
-            alt={`Logo ${SHOP.siteName} - ${SHOP.storeName}`}
-            width={160}
-            height={87}
+            src="/images/logo-badge.jpg"
+            alt={`Logo ${SHOP.siteName} — ${SHOP.storeName}`}
+            width={560}
+            height={560}
             priority
-            className="h-12 w-auto object-contain"
+            className="w-12 h-12 sm:w-[60px] sm:h-[60px] rounded-full object-cover"
           />
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-6 ml-6">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`text-sm font-medium hover:text-[var(--color-gold-dark)] transition-colors ${
-                pathname === link.href ? "text-[var(--color-gold-dark)]" : "text-[var(--color-navy)]"
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+        <nav className="hidden lg:flex items-center gap-8 ml-4">
+          {NAV_LINKS.map((link) => {
+            const active = isActive(pathname, link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={active ? "page" : undefined}
+                className={`cd-eyebrow text-[0.72rem] pb-1 border-b transition-colors ${
+                  active
+                    ? "text-[var(--cd-gold-700)] border-[var(--cd-gold-600)]"
+                    : "text-[var(--cd-navy-800)] border-transparent hover:border-[var(--cd-gold-300)]"
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </nav>
 
-        <form onSubmit={submitSearch} className="hidden md:flex items-center flex-1 max-w-sm ml-auto">
-          <label htmlFor="header-search" className="sr-only">
-            Rechercher un produit
-          </label>
-          <div className="flex items-center w-full rounded-full border border-[var(--color-navy)]/20 bg-white px-3 py-2">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[var(--color-navy)]/60 shrink-0">
-              <circle cx="11" cy="11" r="7" />
-              <path strokeLinecap="round" d="m21 21-4.3-4.3" />
-            </svg>
-            <input
-              id="header-search"
-              type="search"
-              placeholder="Rechercher un modèle..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-transparent outline-none text-sm px-2 text-[var(--color-navy)] placeholder:text-[var(--color-navy)]/40"
-            />
-          </div>
-        </form>
+        <div className="flex items-center gap-1 sm:gap-2 ml-auto">
+          <button
+            type="button"
+            onClick={() => {
+              setSearchOpen((v) => !v);
+              setMenuOpen(false);
+            }}
+            aria-label="Rechercher un modèle"
+            aria-expanded={searchOpen}
+            className="p-2 text-[var(--cd-navy-800)] hover:text-[var(--cd-gold-700)] transition-colors"
+          >
+            <SearchIcon className="w-[22px] h-[22px]" />
+          </button>
 
-        <Link
-          href="/panier"
-          className="relative ml-auto md:ml-2 p-2 text-[var(--color-navy)]"
-          aria-label="Voir le panier"
-        >
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 8h12l-1 12.5a1.5 1.5 0 01-1.5 1.5h-7a1.5 1.5 0 01-1.5-1.5L6 8z" />
-            <path strokeLinecap="round" d="M9 8V6a3 3 0 016 0v2" />
-          </svg>
-          {itemCount > 0 && (
-            <span className="absolute -top-1 -right-1 flex items-center justify-center h-5 min-w-5 px-1 rounded-full bg-[var(--color-gold)] text-white text-[11px] font-bold">
-              {itemCount}
-            </span>
-          )}
-        </Link>
+          <Link
+            href="/panier"
+            aria-label={
+              itemCount > 0 ? `Voir le panier, ${itemCount} article(s)` : "Voir le panier"
+            }
+            className="relative p-2 text-[var(--cd-navy-800)] hover:text-[var(--cd-gold-700)] transition-colors"
+          >
+            <BagIcon className="w-[22px] h-[22px]" />
+            {itemCount > 0 && (
+              <span className="cd-num absolute top-0 right-0 flex items-center justify-center h-[18px] min-w-[18px] px-1 rounded-full bg-[var(--cd-navy-800)] text-white text-[10px] font-semibold">
+                {itemCount}
+              </span>
+            )}
+          </Link>
+
+          <a
+            href={whatsappLink(
+              `Bonjour ${SHOP.storeName}, je souhaite des renseignements sur vos Crocs.`
+            )}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden xl:inline-flex cd-btn cd-btn--solid !py-3 !px-5 !text-[0.68rem] ml-2"
+          >
+            <WhatsAppGlyph className="w-4 h-4" />
+            Commander sur WhatsApp
+          </a>
+        </div>
       </div>
 
-      <form onSubmit={submitSearch} className="md:hidden px-4 pb-3">
-        <div className="flex items-center w-full rounded-full border border-[var(--color-navy)]/20 bg-white px-3 py-2">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[var(--color-navy)]/60 shrink-0">
-            <circle cx="11" cy="11" r="7" />
-            <path strokeLinecap="round" d="m21 21-4.3-4.3" />
-          </svg>
-          <input
-            type="search"
-            placeholder="Rechercher un modèle..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-transparent outline-none text-sm px-2 text-[var(--color-navy)] placeholder:text-[var(--color-navy)]/40"
-            aria-label="Rechercher un produit"
-          />
+      {searchOpen && (
+        <div className="border-t border-[var(--cd-rule)] bg-[var(--cd-bg)]">
+          <form onSubmit={submitSearch} className="cd-container py-4 flex items-center gap-3">
+            <SearchIcon className="w-5 h-5 text-[var(--cd-ink-faint)] shrink-0" />
+            <label htmlFor="header-search" className="sr-only">
+              Rechercher un modèle
+            </label>
+            <input
+              id="header-search"
+              ref={searchInputRef}
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Rechercher un modèle, une couleur…"
+              className="flex-1 min-w-0 bg-transparent outline-none text-base placeholder:text-[var(--cd-ink-faint)]"
+            />
+            <button
+              type="submit"
+              className="cd-eyebrow text-[0.7rem] text-[var(--cd-gold-700)] shrink-0 flex items-center gap-1.5"
+            >
+              Voir <ArrowRightIcon className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setSearchOpen(false)}
+              aria-label="Fermer la recherche"
+              className="p-1 text-[var(--cd-ink-faint)] hover:text-[var(--cd-navy-800)] shrink-0"
+            >
+              <CloseIcon className="w-5 h-5" />
+            </button>
+          </form>
         </div>
-      </form>
+      )}
 
       {menuOpen && (
-        <nav className="lg:hidden border-t border-[var(--color-gold)]/30 bg-[var(--color-cream)] px-4 py-3 flex flex-col gap-1">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              className="py-2.5 text-base font-medium text-[var(--color-navy)] border-b border-[var(--color-navy)]/5 last:border-b-0"
+        <nav className="lg:hidden border-t border-[var(--cd-rule)] bg-[var(--cd-bg)]">
+          <div className="cd-container py-2">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={closePanels}
+                className="flex items-center justify-between py-3.5 border-b border-[var(--cd-rule)] last:border-b-0 cd-eyebrow text-[0.78rem] text-[var(--cd-navy-800)]"
+              >
+                {link.label}
+                <ArrowRightIcon className="w-4 h-4 text-[var(--cd-gold-600)]" />
+              </Link>
+            ))}
+            <a
+              href={whatsappLink(
+                `Bonjour ${SHOP.storeName}, je souhaite des renseignements sur vos Crocs.`
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={closePanels}
+              className="cd-btn cd-btn--whatsapp w-full my-4"
             >
-              {link.label}
-            </Link>
-          ))}
+              <WhatsAppGlyph className="w-4 h-4" />
+              Commander sur WhatsApp
+            </a>
+          </div>
         </nav>
       )}
     </header>

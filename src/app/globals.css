@@ -1,120 +1,433 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   Système visuel CrocsDakar — direction LOOKBOOK / MODE / ÉDITORIAL
+   Palette tirée du logo officiel : bleu marine, doré, crème, bleus clairs.
+   ========================================================================== */
+
 :root {
-  --background: #faf7f1;
-  --foreground: #16303d;
-  --color-navy: #16303d;
-  --color-navy-light: #244a5c;
-  --color-cream: #faf7f1;
-  --color-cream-dark: #f0e9da;
-  --color-gold: #c8a565;
-  --color-gold-dark: #a9884d;
+  /* Marine — du plus profond (grands aplats) au plus clair (vagues du logo) */
+  --cd-navy-900: #0b1c24;
+  --cd-navy-800: #14303d;
+  --cd-navy-700: #1d4152;
+  --cd-navy-500: #2f5d70;
+  --cd-navy-400: #5d8394;
+  --cd-navy-200: #a9c0cb;
+
+  /* Doré — l'accent, à dépenser avec parcimonie */
+  --cd-gold-700: #8a6c32;
+  --cd-gold-600: #a9884d;
+  --cd-gold-500: #c2a063;
+  --cd-gold-300: #ddc79b;
+  --cd-gold-100: #f0e5d0;
+
+  /* Crème — les fonds */
+  --cd-cream-50: #fbf8f2;
+  --cd-cream-100: #f5efe3;
+  --cd-cream-200: #ece3d1;
+  --cd-cream-300: #ded2ba;
+
+  --cd-white: #ffffff;
+
+  /* Rôles */
+  --cd-bg: var(--cd-cream-50);
+  --cd-bg-alt: var(--cd-cream-100);
+  --cd-surface: var(--cd-white);
+  --cd-ink: var(--cd-navy-800);
+  --cd-ink-soft: #4a6675;
+  --cd-ink-faint: #82949d;
+  --cd-rule: var(--cd-cream-300);
+  --cd-accent: var(--cd-gold-600);
+
+  /* Sur fond marine */
+  --cd-on-navy: #eef3f4;
+  --cd-on-navy-soft: #a9c0cb;
+
+  /* États */
+  --cd-whatsapp: #25d366;
+  --cd-whatsapp-dark: #1eb857;
+
+  /* Rythme vertical des sections */
+  --cd-section: 3.5rem;
+}
+
+@media (min-width: 768px) {
+  :root { --cd-section: 5.5rem; }
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-navy: var(--color-navy);
-  --color-navy-light: var(--color-navy-light);
-  --color-cream: var(--color-cream);
-  --color-cream-dark: var(--color-cream-dark);
-  --color-gold: var(--color-gold);
-  --color-gold-dark: var(--color-gold-dark);
-  --font-sans: var(--font-body);
-  --font-display: var(--font-display);
+  --color-navy-900: var(--cd-navy-900);
+  --color-navy-800: var(--cd-navy-800);
+  --color-navy-700: var(--cd-navy-700);
+  --color-navy-400: var(--cd-navy-400);
+  --color-navy-200: var(--cd-navy-200);
+  --color-gold-700: var(--cd-gold-700);
+  --color-gold-600: var(--cd-gold-600);
+  --color-gold-500: var(--cd-gold-500);
+  --color-gold-300: var(--cd-gold-300);
+  --color-gold-100: var(--cd-gold-100);
+  --color-cream-50: var(--cd-cream-50);
+  --color-cream-100: var(--cd-cream-100);
+  --color-cream-200: var(--cd-cream-200);
+  --color-cream-300: var(--cd-cream-300);
+
+  --color-background: var(--cd-bg);
+  --color-foreground: var(--cd-ink);
+  --color-ink: var(--cd-ink);
+  --color-ink-soft: var(--cd-ink-soft);
+  --color-ink-faint: var(--cd-ink-faint);
+  --color-rule: var(--cd-rule);
+
+  --font-display: var(--font-archivo), "Archivo", system-ui, sans-serif;
+  --font-sans: var(--font-karla), "Karla", system-ui, sans-serif;
+  --font-script: var(--font-caveat), "Caveat", cursive;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--cd-bg);
+  color: var(--cd-ink);
+  font-family: var(--font-karla), "Karla", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
-* {
-  scroll-behavior: smooth;
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
 }
 
-.container-shop {
+::selection {
+  background: var(--cd-gold-300);
+  color: var(--cd-navy-800);
+}
+
+:focus-visible {
+  outline: 2px solid var(--cd-gold-600);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+:root {
+  --color-navy: var(--cd-navy-800);
+  --color-navy-light: var(--cd-navy-700);
+  --color-cream: var(--cd-cream-50);
+  --color-cream-dark: var(--cd-cream-100);
+  --color-gold: var(--cd-gold-500);
+  --color-gold-dark: var(--cd-gold-700);
+}
+
+@layer components {
+
+/* --------------------------------------------------------------------------
+   Gabarit
+   -------------------------------------------------------------------------- */
+
+.cd-container {
   width: 100%;
-  max-width: 1280px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
+  max-width: 1360px;
+  margin-inline: auto;
+  padding-inline: 1.125rem;
 }
 
 @media (min-width: 640px) {
-  .container-shop {
-    padding-left: 2rem;
-    padding-right: 2rem;
+  .cd-container { padding-inline: 2rem; }
+}
+
+@media (min-width: 1100px) {
+  .cd-container { padding-inline: 3rem; }
+}
+
+.cd-section {
+  padding-block: var(--cd-section);
+}
+
+/* --------------------------------------------------------------------------
+   Typographie éditoriale
+   -------------------------------------------------------------------------- */
+
+.cd-display {
+  font-family: var(--font-archivo), "Archivo", system-ui, sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.94;
+  text-wrap: balance;
+}
+
+.cd-display-xl { font-size: clamp(2.75rem, 12vw, 6rem); }
+.cd-display-l  { font-size: clamp(1.9rem, 6.2vw, 3.5rem); }
+.cd-display-m  { font-size: clamp(1.35rem, 4vw, 2rem); line-height: 1.02; }
+
+.cd-eyebrow {
+  font-family: var(--font-archivo), "Archivo", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.cd-script {
+  font-family: var(--font-caveat), "Caveat", cursive;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.cd-lead {
+  font-size: 1.0625rem;
+  color: var(--cd-ink-soft);
+  max-width: 46ch;
+}
+
+.cd-num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------------------
+   Titre de section : titre + filet qui file jusqu'au lien
+   -------------------------------------------------------------------------- */
+
+.cd-head {
+  display: grid;
+  gap: 0.75rem 1.5rem;
+  grid-template-columns: 1fr;
+  align-items: end;
+  margin-bottom: 1.75rem;
+}
+
+@media (min-width: 720px) {
+  .cd-head {
+    grid-template-columns: auto 1fr auto;
+    gap: 0 1.5rem;
+  }
+  .cd-head__rule {
+    display: block;
+    height: 1px;
+    background: var(--cd-rule);
+    margin-bottom: 0.65rem;
   }
 }
 
-.btn-primary {
+.cd-head__rule { display: none; }
+
+.cd-head__link {
+  font-family: var(--font-archivo), "Archivo", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cd-gold-700);
+  white-space: nowrap;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.cd-head__link:hover { border-bottom-color: var(--cd-gold-600); }
+
+/* --------------------------------------------------------------------------
+   Boutons
+   -------------------------------------------------------------------------- */
+
+.cd-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  border-radius: 9999px;
-  background-color: var(--color-navy);
-  color: white;
+  gap: 0.6rem;
+  font-family: var(--font-archivo), "Archivo", system-ui, sans-serif;
   font-weight: 600;
-  padding: 0.85rem 1.75rem;
-  transition: background-color 0.2s ease, transform 0.15s ease;
-}
-.btn-primary:hover {
-  background-color: var(--color-navy-light);
-  transform: translateY(-1px);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 1rem 1.9rem;
+  border: 1px solid transparent;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+  text-align: center;
 }
 
+.cd-btn--solid {
+  background: var(--cd-navy-800);
+  color: var(--cd-on-navy);
+}
+.cd-btn--solid:hover { background: var(--cd-navy-700); }
+
+.cd-btn--gold {
+  background: var(--cd-gold-500);
+  color: var(--cd-navy-900);
+}
+.cd-btn--gold:hover { background: var(--cd-gold-600); color: var(--cd-white); }
+
+.cd-btn--ghost {
+  border-color: var(--cd-navy-800);
+  color: var(--cd-navy-800);
+  background: transparent;
+}
+.cd-btn--ghost:hover { background: var(--cd-navy-800); color: var(--cd-on-navy); }
+
+.cd-btn--ghost-light {
+  border-color: rgba(255, 255, 255, 0.45);
+  color: var(--cd-on-navy);
+  background: transparent;
+}
+.cd-btn--ghost-light:hover { background: var(--cd-on-navy); color: var(--cd-navy-800); }
+
+.cd-btn--whatsapp {
+  background: var(--cd-whatsapp);
+  color: #ffffff;
+}
+.cd-btn--whatsapp:hover { background: var(--cd-whatsapp-dark); }
+
+.cd-btn:disabled,
+.cd-btn[aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------------------
+   Tuile image — normalise des photos produit d'origines très différentes
+   (fonds blancs officiels et photos de boutique) sur un même fond crème.
+   -------------------------------------------------------------------------- */
+
+.cd-tile {
+  position: relative;
+  display: block;
+  aspect-ratio: 1 / 1;
+  max-width: 100%;
+  overflow: hidden;
+  background: var(--cd-cream-100);
+}
+
+.cd-tile img {
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cd-tile img { transition: none; }
+}
+
+.cd-card:hover .cd-tile img { transform: scale(1.045); }
+
+/* --------------------------------------------------------------------------
+   Filets et séparateurs
+   -------------------------------------------------------------------------- */
+
+.cd-rule { border-top: 1px solid var(--cd-rule); }
+
+.cd-link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-size 0.25s ease;
+}
+.cd-card:hover .cd-link-underline,
+.cd-link-underline:hover { background-size: 100% 1px; }
+
+/* --------------------------------------------------------------------------
+   Défilement horizontal (rangées produits sur mobile)
+   -------------------------------------------------------------------------- */
+
+.cd-rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 63%;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding-bottom: 0.25rem;
+  margin-inline: -1.125rem;
+  padding-inline: 1.125rem;
+}
+
+.cd-rail::-webkit-scrollbar { display: none; }
+.cd-rail > * { scroll-snap-align: start; }
+
+@media (min-width: 560px) {
+  .cd-rail { grid-auto-columns: 38%; }
+}
+
+@media (min-width: 900px) {
+  .cd-rail {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-columns: auto;
+    overflow-x: visible;
+    gap: 1.75rem 1.5rem;
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Animation d'entrée, depuis un état visible
+   -------------------------------------------------------------------------- */
+
+@keyframes cd-rise {
+  from { opacity: 0.55; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cd-rise { animation: cd-rise 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+}
+
+/* --------------------------------------------------------------------------
+   COMPATIBILITÉ TEMPORAIRE
+   Les pages pas encore reprises (catalogue, fiche produit, panier, commande,
+   administration) utilisent l'ancien vocabulaire. On le maintient en vie, mappé
+   sur la nouvelle palette, pour qu'aucune page ne casse pendant la refonte.
+   À supprimer quand la dernière de ces pages sera passée au nouveau système.
+   -------------------------------------------------------------------------- */
+
+
+.container-shop {
+  width: 100%;
+  max-width: 1360px;
+  margin-inline: auto;
+  padding-inline: 1.125rem;
+}
+
+@media (min-width: 640px) {
+  .container-shop { padding-inline: 2rem; }
+}
+
+@media (min-width: 1100px) {
+  .container-shop { padding-inline: 3rem; }
+}
+
+.btn-primary,
+.btn-outline,
 .btn-whatsapp {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  border-radius: 9999px;
-  background-color: #25d366;
-  color: white;
+  gap: 0.6rem;
+  font-family: var(--font-archivo), "Archivo", system-ui, sans-serif;
   font-weight: 600;
-  padding: 0.85rem 1.75rem;
-  transition: background-color 0.2s ease, transform 0.15s ease;
-}
-.btn-whatsapp:hover {
-  background-color: #1eb857;
-  transform: translateY(-1px);
-}
-
-.btn-outline {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border-radius: 9999px;
-  border: 1.5px solid var(--color-navy);
-  color: var(--color-navy);
-  font-weight: 600;
-  padding: 0.8rem 1.7rem;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-.btn-outline:hover {
-  background-color: var(--color-navy);
-  color: white;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 1rem 1.9rem;
+  border: 1px solid transparent;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
-.card-shadow {
-  box-shadow: 0 2px 8px rgba(22, 48, 61, 0.06), 0 8px 24px rgba(22, 48, 61, 0.05);
-}
+.btn-primary { background: var(--cd-navy-800); color: var(--cd-on-navy); }
+.btn-primary:hover { background: var(--cd-navy-700); }
 
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+.btn-outline { border-color: var(--cd-navy-800); color: var(--cd-navy-800); }
+.btn-outline:hover { background: var(--cd-navy-800); color: var(--cd-on-navy); }
 
-.animate-fade-in-up {
-  animation: fade-in-up 0.5s ease both;
+.btn-whatsapp { background: var(--cd-whatsapp); color: #fff; }
+.btn-whatsapp:hover { background: var(--cd-whatsapp-dark); }
+
+.card-shadow { box-shadow: 0 1px 2px rgba(20, 48, 61, 0.05), 0 10px 30px rgba(20, 48, 61, 0.06); }
+
+.animate-fade-in-up { animation: cd-rise 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
 }

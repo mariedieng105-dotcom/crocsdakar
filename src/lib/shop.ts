@@ -15,8 +15,35 @@ export const SHOP = {
 
 export const PRICE_TBD_LABEL = "Prix à confirmer";
 
+export const NAV_LINKS = [
+  { href: "/", label: "Accueil" },
+  { href: "/catalogue", label: "Boutique" },
+  { href: "/catalogue?sort=newest", label: "Nouveautés" },
+  { href: "/a-propos", label: "À propos" },
+  { href: "/#contact", label: "Contact" },
+];
+
+/** Arguments de réassurance, repris du bandeau haut et du bas de page. */
+export const REASSURANCE = [
+  { title: "Produits", detail: "100 % originaux", icon: "crown" as const },
+  { title: "Livraison", detail: "partout au Sénégal", icon: "truck" as const },
+  { title: "Paiement", detail: "à la livraison", icon: "card" as const },
+  { title: "Service client", detail: "réactif", icon: "support" as const },
+];
+
+function groupDigits(amount: number): string {
+  // Espace insécable fine entre les milliers, pour éviter une coupure de ligne
+  // au milieu d'un prix.
+  return amount.toLocaleString("fr-FR").replace(/ |\s|,/g, " ");
+}
+
 export function formatFCFA(amount: number): string {
-  return `${amount.toLocaleString("fr-FR").replace(/,/g, " ")} FCFA`;
+  return `${groupDigits(amount)} FCFA`;
+}
+
+/** Format court utilisé sur les cartes et les fiches produit. */
+export function formatPriceShort(amount: number | null): string {
+  return amount === null ? PRICE_TBD_LABEL : `${groupDigits(amount)} F`;
 }
 
 export function formatPrice(amount: number | null): string {

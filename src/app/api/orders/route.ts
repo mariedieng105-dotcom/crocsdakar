@@ -28,10 +28,22 @@ export async function POST(request: NextRequest) {
   const { customerName, phone, address, zone, notes, items } = parsed.data;
 
   const productIds = Array.from(new Set(items.map((i) => i.productId)));
-  const products = await prisma.product.findMany({
-    where: { id: { in: productIds } },
-    include: { sizes: true },
-  });
+
+  // Une base injoignable renverrait sinon au client le message brut de Prisma,
+  // qui cite l'hôte et le port du serveur de base de données.
+  let products;
+  try {
+    products = await prisma.product.findMany({
+      where: { id: { in: productIds } },
+      include: { sizes: true },
+    });
+  } catch (err) {
+    console.error("POST /api/orders (lecture produits)", err);
+    return NextResponse.json(
+      { error: "Commande impossible pour le moment. Réessayez dans un instant." },
+      { status: 503 }
+    );
+  }
 
   const productMap = new Map(products.map((p) => [p.id, p]));
 
@@ -94,28 +106,40 @@ export async function POST(request: NextRequest) {
 
   const subtotal = orderItemsData.reduce((sum, i) => sum + i.lineTotal, 0);
 
-  let orderNumber = generateOrderNumber();
-  for (let attempts = 0; attempts < 5; attempts++) {
-    const existing = await prisma.order.findUnique({ where: { orderNumber } });
-    if (!existing) break;
-    orderNumber = generateOrderNumber();
-  }
+  // Après cinq tirages, un numéro déjà pris ferait échouer la création sur la
+  // contrainte d'unicité : le message d'erreur reste alors lisible pour le
+  // client, et la commande n'est simplement pas enregistrée.
+  let order;
+  try {
+    let orderNumber = generateOrderNumber();
+    for (let attempts = 0; attempts < 5; attempts++) {
+      const existing = await prisma.order.findUnique({ where: { orderNumber } });
+      if (!existing) break;
+      orderNumber = generateOrderNumber();
+    }
 
-  const order = await prisma.order.create({
-    data: {
-      orderNumber,
-      customerName,
-      phone,
-      address,
-      zone: zone || null,
-      notes: notes || null,
-      subtotal,
-      deliveryFee: null,
-      total: subtotal,
-      items: { create: orderItemsData },
-    },
-    include: { items: true },
-  });
+    order = await prisma.order.create({
+      data: {
+        orderNumber,
+        customerName,
+        phone,
+        address,
+        zone: zone || null,
+        notes: notes || null,
+        subtotal,
+        deliveryFee: null,
+        total: subtotal,
+        items: { create: orderItemsData },
+      },
+      include: { items: true },
+    });
+  } catch (err) {
+    console.error("POST /api/orders (création)", err);
+    return NextResponse.json(
+      { error: "Votre commande n'a pas pu être enregistrée. Réessayez dans un instant." },
+      { status: 503 }
+    );
+  }
 
   return NextResponse.json({ order }, { status: 201 });
 }

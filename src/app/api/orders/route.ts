@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { orderInputSchema } from "@/lib/validation";
+import { SINGLE_SIZE_LABEL } from "@/lib/cart-types";
 
 function generateOrderNumber(): string {
   const date = new Date();
@@ -52,12 +53,24 @@ export async function POST(request: NextRequest) {
     if (!product.available) {
       return NextResponse.json({ error: `Le produit "${product.name}" n'est plus disponible.` }, { status: 400 });
     }
-    const size = product.sizes.find((s) => s.label === item.size);
-    if (!size || !size.available) {
-      return NextResponse.json(
-        { error: `La pointure ${item.size} n'est plus disponible pour "${product.name}".` },
-        { status: 400 }
-      );
+    // Un produit sans aucune pointure déclarée est un accessoire : il se commande
+    // en taille unique. Pour tous les autres, la pointure doit exister et être
+    // disponible.
+    if (product.sizes.length === 0) {
+      if (item.size !== SINGLE_SIZE_LABEL) {
+        return NextResponse.json(
+          { error: `"${product.name}" se commande en ${SINGLE_SIZE_LABEL.toLowerCase()}.` },
+          { status: 400 }
+        );
+      }
+    } else {
+      const size = product.sizes.find((s) => s.label === item.size);
+      if (!size || !size.available) {
+        return NextResponse.json(
+          { error: `La pointure ${item.size} n'est plus disponible pour "${product.name}".` },
+          { status: 400 }
+        );
+      }
     }
 
     if (product.price === null) {

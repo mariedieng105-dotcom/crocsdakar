@@ -76,12 +76,12 @@ export default async function ProductPage({
   };
 
   return (
-    <div className="container-shop py-10">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <ProductGalleryAndActions product={product} />
-    </div>
+    </>
   );
 }

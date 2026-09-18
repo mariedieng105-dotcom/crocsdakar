@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { serializeProduct } from "@/lib/serialize";
@@ -18,7 +19,11 @@ export default async function EditProductPage({
 
   return (
     <div>
-      <h1 className="font-display font-bold text-2xl text-[var(--color-navy)] mb-6">Modifier le produit</h1>
+      <Link href="/admin/produits" className="cd-ad-link">
+        ← Retour aux produits
+      </Link>
+      <p className="cd-eyebrow text-[var(--cd-gold-700)] mt-4">{product.model}</p>
+      <h1 className="cd-ad-title mt-2 mb-7">{product.name}</h1>
       <ProductEditor initialProduct={serializeProduct(product)} />
     </div>
   );

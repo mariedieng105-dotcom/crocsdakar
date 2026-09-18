@@ -91,20 +91,20 @@ export default function ImportCatalogueClient() {
   };
 
   if (loadingPreview) {
-    return <p className="text-sm text-[var(--color-navy)]/60">Vérification du catalogue à importer...</p>;
+    return <p className="text-sm text-[var(--cd-ink-soft)]">Vérification du catalogue à importer…</p>;
   }
 
   if (previewError) {
-    return <p className="text-sm text-red-600 font-medium">{previewError}</p>;
+    return <p className="cd-ad-note cd-ad-note--danger">{previewError}</p>;
   }
 
   if (!preview) return null;
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="bg-white rounded-2xl card-shadow p-5">
-        <h2 className="font-semibold text-[var(--color-navy)] mb-3">Vérification avant import</h2>
-        <ul className="text-sm text-[var(--color-navy)]/80 flex flex-col gap-1">
+      <div className="cd-ad-card">
+        <h2 className="cd-ad-card__title">Vérification avant import</h2>
+        <ul className="text-sm text-[var(--cd-ink-soft)] flex flex-col gap-1.5 mt-5">
           <li>Produits dans le fichier source : <strong>{preview.totalInSource}</strong></li>
           <li>Photos dans le fichier source : <strong>{preview.totalImagesInSource}</strong></li>
           <li>Pointures dans le fichier source : <strong>{preview.totalSizesInSource}</strong></li>
@@ -112,49 +112,49 @@ export default function ImportCatalogueClient() {
           <li>Restant à importer : <strong>{preview.pendingImportCount}</strong></li>
           <li>
             Stockage photos (Vercel Blob) :{" "}
-            <strong className={preview.blobConfigured ? "text-green-700" : "text-red-600"}>
+            <strong className={preview.blobConfigured ? "text-[#24603a]" : "text-[#9b302a]"}>
               {preview.blobConfigured ? "configuré" : "NON configuré"}
             </strong>
           </li>
         </ul>
         {!preview.blobConfigured && (
-          <p className="text-sm text-red-600 font-medium mt-3">
+          <p className="cd-ad-note cd-ad-note--danger mt-4">
             L&apos;import des photos échouera tant que BLOB_READ_WRITE_TOKEN n&apos;est pas configuré sur Vercel.
           </p>
         )}
       </div>
 
       {preview.pendingImportCount === 0 ? (
-        <div className="bg-green-50 border border-green-200 rounded-2xl p-5 text-green-800 text-sm">
+        <div className="cd-ad-note cd-ad-note--ok">
           Tous les produits du catalogue initial sont déjà importés. Aucune action nécessaire.
         </div>
       ) : (
         <>
-          <div className="bg-white rounded-2xl card-shadow p-5">
-            <h2 className="font-semibold text-[var(--color-navy)] mb-3">
+          <div className="cd-ad-card">
+            <h2 className="cd-ad-card__title">
               Aperçu des {preview.pendingImportCount} produits à importer
             </h2>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm min-w-[640px]">
+            <div className="overflow-x-auto mt-5">
+              <table className="cd-ad-table min-w-[640px]">
                 <thead>
-                  <tr className="text-left text-[var(--color-navy)]/50 border-b border-[var(--color-navy)]/10">
-                    <th className="py-1.5 pr-3">Nom</th>
-                    <th className="py-1.5 pr-3">Modèle</th>
-                    <th className="py-1.5 pr-3">Prix</th>
-                    <th className="py-1.5 pr-3">Pointures</th>
-                    <th className="py-1.5 pr-3">Photos</th>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Modèle</th>
+                    <th>Prix</th>
+                    <th>Pointures</th>
+                    <th>Photos</th>
                   </tr>
                 </thead>
                 <tbody>
                   {preview.pendingImport.map((p) => (
-                    <tr key={p.slug} className="border-b border-[var(--color-navy)]/5 last:border-0">
-                      <td className="py-1.5 pr-3">{p.name}</td>
-                      <td className="py-1.5 pr-3 text-[var(--color-navy)]/70">{p.model}</td>
-                      <td className="py-1.5 pr-3">{formatPrice(p.price)}</td>
-                      <td className="py-1.5 pr-3">
+                    <tr key={p.slug}>
+                      <td>{p.name}</td>
+                      <td className="text-[var(--cd-ink-soft)]">{p.model}</td>
+                      <td className="cd-num whitespace-nowrap">{formatPrice(p.price)}</td>
+                      <td className="cd-num">
                         {p.sizes.filter((s) => s.available).length}/{p.sizes.length} dispo.
                       </td>
-                      <td className="py-1.5 pr-3">{p.imagesCount}</td>
+                      <td className="cd-num">{p.imagesCount}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -163,10 +163,10 @@ export default function ImportCatalogueClient() {
           </div>
 
           <div>
-            <button onClick={handleImport} disabled={importing || !preview.blobConfigured} className="btn-primary disabled:opacity-50">
-              {importing ? "Importation en cours (peut prendre plusieurs minutes)..." : `Importer ${preview.pendingImportCount} produits`}
+            <button onClick={handleImport} disabled={importing || !preview.blobConfigured} className="cd-ad-btn cd-ad-btn--solid">
+              {importing ? "Importation en cours (peut prendre plusieurs minutes)…" : `Importer ${preview.pendingImportCount} produits`}
             </button>
-            <p className="text-xs text-[var(--color-navy)]/50 mt-2 max-w-lg">
+            <p className="text-xs text-[var(--cd-ink-faint)] mt-3 max-w-lg">
               Avec {preview.totalImagesInSource} photos à envoyer, l&apos;import peut prendre plusieurs
               minutes. Si la page affiche une erreur de temporisation, c&apos;est normal avec ce volume
               de photos — recliquez simplement sur « Importer », les produits déjà créés sont
@@ -177,18 +177,18 @@ export default function ImportCatalogueClient() {
         </>
       )}
 
-      {resultError && <p className="text-sm text-red-600 font-medium">{resultError}</p>}
+      {resultError && <p className="cd-ad-note cd-ad-note--danger">{resultError}</p>}
 
       {result && (
-        <div className="bg-white rounded-2xl card-shadow p-5">
-          <h2 className="font-semibold text-[var(--color-navy)] mb-3">Résultat de l&apos;import</h2>
-          <ul className="text-sm text-[var(--color-navy)]/80 flex flex-col gap-1 mb-3">
+        <div className="cd-ad-card">
+          <h2 className="cd-ad-card__title">Résultat de l&apos;import</h2>
+          <ul className="text-sm text-[var(--cd-ink-soft)] flex flex-col gap-1.5 mt-5 mb-4">
             <li>Produits créés : <strong>{result.productsCreated}</strong></li>
             <li>Photos envoyées : <strong>{result.imagesUploaded}</strong></li>
             <li>Pointures créées : <strong>{result.sizesCreated}</strong></li>
           </ul>
           {result.errors.length > 0 && (
-            <div className="text-sm text-red-600">
+            <div className="text-sm text-[#9b302a]">
               <p className="font-semibold mb-1">{result.errors.length} erreur(s) :</p>
               <ul className="list-disc pl-5">
                 {result.errors.map((e, i) => (

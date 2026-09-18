@@ -7,16 +7,28 @@ export default async function AdminOrdersPage() {
     include: { items: true },
   });
 
+  const newCount = orders.filter((o) => o.status === "NOUVELLE").length;
+
   return (
     <div>
-      <h1 className="font-display font-bold text-2xl text-[var(--color-navy)] mb-6">Commandes</h1>
+      <p className="cd-eyebrow text-[var(--cd-gold-700)]">Ventes</p>
+      <h1 className="cd-ad-title mt-2">
+        Commandes <span className="cd-num text-[var(--cd-ink-faint)]">({orders.length})</span>
+      </h1>
+
+      {newCount > 0 && (
+        <p className="cd-ad-note mt-6">
+          {newCount} commande{newCount > 1 ? "s" : ""} à traiter. Ouvrez une commande pour saisir les
+          frais de livraison et changer son statut.
+        </p>
+      )}
 
       {orders.length === 0 ? (
-        <div className="bg-white rounded-2xl card-shadow p-8 text-center text-sm text-[var(--color-navy)]/50">
+        <div className="cd-ad-card mt-6 text-center text-sm text-[var(--cd-ink-faint)] py-10">
           Aucune commande pour le moment.
         </div>
       ) : (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 mt-6">
           {orders.map((order) => (
             <AdminOrderCard
               key={order.id}

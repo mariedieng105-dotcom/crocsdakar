@@ -1,9 +1,13 @@
+import Link from "next/link";
 import NewProductForm from "@/components/admin/NewProductForm";
 
 export default function NewProductPage() {
   return (
     <div>
-      <h1 className="font-display font-bold text-2xl text-[var(--color-navy)] mb-6">Ajouter un produit</h1>
+      <Link href="/admin/produits" className="cd-ad-link">
+        ← Retour aux produits
+      </Link>
+      <h1 className="cd-ad-title mt-3 mb-7">Ajouter un produit</h1>
       <NewProductForm />
     </div>
   );

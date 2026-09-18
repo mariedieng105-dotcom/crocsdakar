@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { serializeProduct } from "@/lib/serialize";
 import { z } from "zod";
+import { CATEGORY_VALUES } from "@/lib/categories";
 
 // Distinct du schéma de création : ici, un champ "price" absent de la requête
 // (ex. un simple toggle de disponibilité) ne doit PAS effacer le prix existant.
@@ -18,6 +19,7 @@ const updateSchema = z.object({
   model: z.string().trim().min(1).optional(),
   price: priceUpdateSchema,
   description: z.string().trim().optional(),
+  category: z.enum(CATEGORY_VALUES).optional(),
   available: z.coerce.boolean().optional(),
   quantity: z.coerce.number().int().nonnegative().nullable().optional(),
 });

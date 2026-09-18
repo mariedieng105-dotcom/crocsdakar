@@ -13,19 +13,42 @@ function getSecretKey() {
   return new TextEncoder().encode(secret);
 }
 
+/** Variable d'environnement admin absente du serveur. */
+export class AdminConfigMissingError extends Error {}
+
+/**
+ * ADMIN_PASSWORD_HASH est présent mais bcrypt ne sait pas le lire. Le cas
+ * classique : le « $ » d'un hash bcrypt interprété par un shell au moment du
+ * copier-coller, ce qui tronque la valeur. Les deux cas donnaient le même
+ * message « configuration incomplète », impossible à distinguer côté client.
+ */
+export class AdminPasswordHashInvalidError extends Error {}
+
 export async function verifyAdminCredentials(email: string, password: string): Promise<boolean> {
   const adminEmail = process.env.ADMIN_EMAIL;
   const adminPasswordHash = process.env.ADMIN_PASSWORD_HASH;
 
   if (!adminEmail || !adminPasswordHash) {
-    throw new Error("ADMIN_EMAIL ou ADMIN_PASSWORD_HASH manquant dans les variables d'environnement.");
+    const missing = [
+      !adminEmail ? "ADMIN_EMAIL" : null,
+      !adminPasswordHash ? "ADMIN_PASSWORD_HASH" : null,
+    ].filter(Boolean);
+    throw new AdminConfigMissingError(`${missing.join(" et ")} manquant(s) côté serveur.`);
   }
 
   if (email.trim().toLowerCase() !== adminEmail.trim().toLowerCase()) {
     return false;
   }
 
-  return bcrypt.compare(password, adminPasswordHash);
+  try {
+    return await bcrypt.compare(password, adminPasswordHash);
+  } catch (err) {
+    throw new AdminPasswordHashInvalidError(
+      `ADMIN_PASSWORD_HASH est présent mais illisible par bcrypt (${
+        err instanceof Error ? err.message : "erreur inconnue"
+      }).`
+    );
+  }
 }
 
 export async function createAdminSession(email: string) {

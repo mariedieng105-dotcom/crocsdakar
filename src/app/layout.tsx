@@ -7,6 +7,7 @@ import AnnouncementBar from "@/components/AnnouncementBar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppFloatingButton from "@/components/WhatsAppFloatingButton";
+import StorefrontOnly from "@/components/StorefrontOnly";
 
 // Archivo pour les titres en capitales, Karla pour le texte courant,
 // Caveat pour les signatures manuscrites de la direction artistique.
@@ -96,11 +97,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
         <CartProvider>
-          <AnnouncementBar />
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <WhatsAppFloatingButton />
+          <StorefrontOnly>
+            <AnnouncementBar />
+            <Header />
+          </StorefrontOnly>
+          <main className="flex-1 flex flex-col">{children}</main>
+          <StorefrontOnly>
+            <Footer />
+            <WhatsAppFloatingButton />
+          </StorefrontOnly>
         </CartProvider>
       </body>
     </html>

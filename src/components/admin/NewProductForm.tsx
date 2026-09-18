@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import type { ProductCategory } from "@prisma/client";
+import { CATEGORY_VALUES, CATEGORY_LABELS } from "@/lib/categories";
 
 export default function NewProductForm() {
   const router = useRouter();
@@ -9,6 +11,7 @@ export default function NewProductForm() {
   const [model, setModel] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
+  const [category, setCategory] = useState<ProductCategory>("A_CLASSER");
   const [available, setAvailable] = useState(true);
   const [quantity, setQuantity] = useState("");
   const [sizesText, setSizesText] = useState("36, 37, 38, 39, 40, 41");
@@ -34,6 +37,7 @@ export default function NewProductForm() {
           model,
           price: price.trim() === "" ? null : Number(price),
           description,
+          category,
           available,
           quantity: quantity ? Number(quantity) : null,
           sizes,
@@ -55,46 +59,90 @@ export default function NewProductForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-2xl card-shadow p-6 flex flex-col gap-4 max-w-xl">
+    <form onSubmit={handleSubmit} className="cd-ad-card flex flex-col gap-5 max-w-xl">
       <div>
-        <label htmlFor="name" className="block text-sm font-semibold text-[var(--color-navy)] mb-1">Nom du produit *</label>
-        <input id="name" required value={name} onChange={(e) => setName(e.target.value)} className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm" />
+        <label htmlFor="name" className="cd-ad-label">Nom du produit *</label>
+        <input id="name" required value={name} onChange={(e) => setName(e.target.value)} className="cd-ad-field" />
       </div>
+
       <div>
-        <label htmlFor="model" className="block text-sm font-semibold text-[var(--color-navy)] mb-1">Modèle *</label>
-        <input id="model" required value={model} onChange={(e) => setModel(e.target.value)} className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm" />
+        <label htmlFor="model" className="cd-ad-label">Modèle *</label>
+        <input id="model" required value={model} onChange={(e) => setModel(e.target.value)} className="cd-ad-field" />
       </div>
+
       <div>
-        <label htmlFor="price" className="block text-sm font-semibold text-[var(--color-navy)] mb-1">Prix (FCFA)</label>
-        <input id="price" type="number" min={0} value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Laisser vide si prix à confirmer" className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm" />
-        <p className="text-xs text-[var(--color-navy)]/50 mt-1">
-          Laissez vide pour afficher « Prix à confirmer » — le produit restera visible mais non commandable jusqu&apos;à ce que vous renseigniez un prix.
+        <label htmlFor="price" className="cd-ad-label">Prix (FCFA)</label>
+        <input
+          id="price"
+          type="number"
+          min={0}
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          placeholder="Laisser vide si prix à confirmer"
+          className="cd-ad-field cd-num"
+        />
+        <p className="text-xs text-[var(--cd-ink-faint)] mt-2">
+          Laissez vide pour afficher « Prix à confirmer » — le produit restera visible mais non
+          commandable jusqu&apos;à ce que vous renseigniez un prix.
         </p>
       </div>
+
       <div>
-        <label htmlFor="description" className="block text-sm font-semibold text-[var(--color-navy)] mb-1">Description</label>
-        <textarea id="description" rows={4} value={description} onChange={(e) => setDescription(e.target.value)} className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm" />
+        <label htmlFor="description" className="cd-ad-label">Description</label>
+        <textarea id="description" rows={4} value={description} onChange={(e) => setDescription(e.target.value)} className="cd-ad-field" />
       </div>
+
       <div>
-        <label htmlFor="quantity" className="block text-sm font-semibold text-[var(--color-navy)] mb-1">Quantité disponible (optionnel)</label>
-        <input id="quantity" type="number" min={0} value={quantity} onChange={(e) => setQuantity(e.target.value)} className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm" />
+        <label htmlFor="new-category" className="cd-ad-label">Catégorie</label>
+        <select
+          id="new-category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value as ProductCategory)}
+          className="cd-ad-field"
+        >
+          {CATEGORY_VALUES.map((value) => (
+            <option key={value} value={value}>
+              {CATEGORY_LABELS[value]}
+            </option>
+          ))}
+        </select>
+        <p className="text-xs text-[var(--cd-ink-faint)] mt-2">
+          Détermine dans quelle catégorie de la boutique le produit apparaît. « À classer » le laisse
+          hors des catégories, sans le masquer du catalogue.
+        </p>
       </div>
+
       <div>
-        <label htmlFor="sizes" className="block text-sm font-semibold text-[var(--color-navy)] mb-1">Pointures initiales (séparées par des virgules)</label>
-        <input id="sizes" value={sizesText} onChange={(e) => setSizesText(e.target.value)} className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm" />
-        <p className="text-xs text-[var(--color-navy)]/50 mt-1">Vous pourrez ajouter, modifier ou désactiver des pointures après la création.</p>
+        <label htmlFor="quantity" className="cd-ad-label">Quantité disponible (optionnel)</label>
+        <input id="quantity" type="number" min={0} value={quantity} onChange={(e) => setQuantity(e.target.value)} className="cd-ad-field cd-num" />
       </div>
-      <label className="flex items-center gap-2 text-sm font-medium text-[var(--color-navy)]">
-        <input type="checkbox" checked={available} onChange={(e) => setAvailable(e.target.checked)} />
-        Produit disponible à la vente
+
+      <div>
+        <label htmlFor="sizes" className="cd-ad-label">Pointures initiales (séparées par des virgules)</label>
+        <input id="sizes" value={sizesText} onChange={(e) => setSizesText(e.target.value)} className="cd-ad-field cd-num" />
+        <p className="text-xs text-[var(--cd-ink-faint)] mt-2">
+          Laissez vide pour un accessoire sans pointure. Vous pourrez ajouter, modifier ou désactiver
+          des pointures après la création.
+        </p>
+      </div>
+
+      <label className="flex items-start gap-3 text-sm">
+        <input
+          type="checkbox"
+          checked={available}
+          onChange={(e) => setAvailable(e.target.checked)}
+          className="mt-0.5 w-4 h-4 accent-[var(--cd-navy-800)]"
+        />
+        <span className="font-semibold">Visible dans la boutique</span>
       </label>
 
-      {error && <p className="text-sm text-red-600 font-medium">{error}</p>}
+      {error && <p className="cd-ad-note cd-ad-note--danger">{error}</p>}
 
-      <button type="submit" disabled={submitting} className="btn-primary disabled:opacity-50">
-        {submitting ? "Création..." : "Créer le produit"}
+      <button type="submit" disabled={submitting} className="cd-ad-btn cd-ad-btn--solid self-start">
+        {submitting ? "Création…" : "Créer le produit"}
       </button>
-      <p className="text-xs text-[var(--color-navy)]/50">
+
+      <p className="text-xs text-[var(--cd-ink-faint)]">
         Vous pourrez ajouter les photos juste après la création du produit.
       </p>
     </form>

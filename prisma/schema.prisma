@@ -8,6 +8,17 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+/// Catégories commerciales du client. Le catalogue importé ne contient pas
+/// l'information femme / homme / enfant : les produits arrivent donc en
+/// A_CLASSER et sont rangés à la main depuis l'administration.
+enum ProductCategory {
+  FEMME
+  HOMME
+  ENFANT
+  ACCESSOIRES
+  A_CLASSER
+}
+
 enum OrderStatus {
   NOUVELLE
   CONFIRMEE
@@ -17,16 +28,17 @@ enum OrderStatus {
 }
 
 model Product {
-  id          String   @id @default(cuid())
+  id          String          @id @default(cuid())
   name        String
   model       String
-  slug        String   @unique
+  slug        String          @unique
   price       Int?
-  description String   @db.Text
-  available   Boolean  @default(true)
+  description String          @db.Text
+  category    ProductCategory @default(A_CLASSER)
+  available   Boolean         @default(true)
   quantity    Int?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
 
   images ProductImage[]
   sizes  ProductSize[]
@@ -34,6 +46,7 @@ model Product {
 
   @@index([createdAt])
   @@index([available])
+  @@index([category])
 }
 
 model ProductImage {

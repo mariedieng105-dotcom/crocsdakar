@@ -43,6 +43,7 @@ export async function POST(request: NextRequest) {
       slug,
       price: data.price,
       description: data.description,
+      category: data.category,
       available: data.available,
       quantity: data.quantity ?? null,
       sizes: {

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { serializeProduct } from "@/lib/serialize";
 import type { Prisma } from "@prisma/client";
+import { categoryFromSlug } from "@/lib/categories";
+import { familyOf, isFamilyKey } from "@/lib/families";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -9,6 +11,8 @@ export async function GET(request: NextRequest) {
   const model = searchParams.get("model")?.trim();
   const size = searchParams.get("size")?.trim();
   const sort = searchParams.get("sort") || "newest";
+  const category = categoryFromSlug(searchParams.get("categorie"));
+  const familyParam = searchParams.get("famille");
   const onlyAvailable = searchParams.get("available") !== "false";
 
   const where: Prisma.ProductWhereInput = {};
@@ -28,6 +32,12 @@ export async function GET(request: NextRequest) {
     where.model = { equals: model, mode: "insensitive" };
   }
 
+  // Seules les catégories publiques sont filtrables : « à classer » est un état
+  // de travail interne, jamais une entrée de navigation.
+  if (category) {
+    where.category = category;
+  }
+
   if (size) {
     where.sizes = { some: { label: size, available: true } };
   }
@@ -45,5 +55,12 @@ export async function GET(request: NextRequest) {
     include: { images: true, sizes: true },
   });
 
-  return NextResponse.json({ products: products.map(serializeProduct) });
+  // La famille se déduit de l'identifiant du produit et n'existe donc pas en
+  // base : le filtrage se fait après la requête, sur un catalogue de quelques
+  // dizaines de références.
+  const filtered = isFamilyKey(familyParam)
+    ? products.filter((p) => familyOf(p.slug) === familyParam)
+    : products;
+
+  return NextResponse.json({ products: filtered.map(serializeProduct) });
 }

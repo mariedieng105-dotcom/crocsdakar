@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { serializeProduct } from "@/lib/serialize";
 import AdminProductRow from "@/components/admin/AdminProductRow";
+import { UNCLASSIFIED } from "@/lib/categories";
 
 export default async function AdminProductsPage() {
   const products = await prisma.product.findMany({
@@ -9,28 +10,58 @@ export default async function AdminProductsPage() {
     include: { images: true, sizes: true },
   });
 
+  const toClassify = products.filter((p) => p.category === UNCLASSIFIED).length;
+  const hidden = products.filter((p) => !p.available).length;
+
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="font-display font-bold text-2xl text-[var(--color-navy)]">Produits</h1>
-        <Link href="/admin/produits/nouveau" className="btn-primary">Ajouter un produit</Link>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="cd-eyebrow text-[var(--cd-gold-700)]">Catalogue</p>
+          <h1 className="cd-ad-title mt-2">
+            Produits <span className="cd-num text-[var(--cd-ink-faint)]">({products.length})</span>
+          </h1>
+        </div>
+        <Link href="/admin/produits/nouveau" className="cd-ad-btn cd-ad-btn--solid">
+          Ajouter un produit
+        </Link>
       </div>
 
-      <div className="bg-white rounded-2xl card-shadow p-5 overflow-x-auto">
+      {toClassify > 0 && (
+        <p className="cd-ad-note cd-ad-note--warn mt-6">
+          {toClassify} produit{toClassify > 1 ? "s" : ""} encore à classer. Tant qu&apos;un produit
+          est « à classer », il n&apos;apparaît dans aucune catégorie de la boutique. Choisissez sa
+          catégorie directement dans la colonne « Catégorie » ci-dessous.
+        </p>
+      )}
+
+      {hidden > 0 && (
+        <p className="cd-ad-note mt-3">
+          {hidden} produit{hidden > 1 ? "s sont masqués" : " est masqué"} de la boutique.
+          Un produit masqué reste en base et se réaffiche en un clic sur « Masqué ».
+        </p>
+      )}
+
+      <div className="cd-ad-card mt-6">
         {products.length === 0 ? (
-          <p className="text-sm text-[var(--color-navy)]/50 py-8 text-center">
+          <p className="text-sm text-[var(--cd-ink-faint)] py-8 text-center">
             Aucun produit pour le moment. Ajoutez votre premier Crocs.
           </p>
         ) : (
-          <table className="w-full text-sm min-w-[640px]">
+          <div className="relative overflow-x-auto">
+            {/* « relative » rattache les libellés sr-only du tableau à ce
+                conteneur : sans cela, leur position absolue les sort du
+                défilement horizontal et élargit la page sur mobile. */}
+          <table className="cd-ad-table min-w-[820px]">
             <thead>
-              <tr className="text-left text-[var(--color-navy)]/50 border-b border-[var(--color-navy)]/10">
-                <th className="py-2 pr-4">Photo</th>
-                <th className="py-2 pr-4">Nom</th>
-                <th className="py-2 pr-4">Modèle</th>
-                <th className="py-2 pr-4">Prix</th>
-                <th className="py-2 pr-4">Statut</th>
-                <th className="py-2 pr-4">Actions</th>
+              <tr>
+                <th>Photo</th>
+                <th>Nom</th>
+                <th>Modèle</th>
+                <th>Prix</th>
+                <th>Catégorie</th>
+                <th>Boutique</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -39,6 +70,7 @@ export default async function AdminProductsPage() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>

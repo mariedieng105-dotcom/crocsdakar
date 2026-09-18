@@ -2,8 +2,11 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { SerializedProduct } from "@/lib/serialize";
+import type { ProductCategory } from "@prisma/client";
+import { CATEGORY_VALUES, CATEGORY_LABELS, UNCLASSIFIED } from "@/lib/categories";
 
 export default function ProductEditor({ initialProduct }: { initialProduct: SerializedProduct }) {
   const router = useRouter();
@@ -17,7 +20,7 @@ export default function ProductEditor({ initialProduct }: { initialProduct: Seri
   };
 
   return (
-    <div className="flex flex-col gap-8 max-w-3xl">
+    <div className="flex flex-col gap-6">
       <InfoSection product={product} onSaved={refresh} />
       <ImagesSection product={product} onChanged={refresh} />
       <SizesSection product={product} onChanged={refresh} />
@@ -30,10 +33,12 @@ function InfoSection({ product, onSaved }: { product: SerializedProduct; onSaved
   const [model, setModel] = useState(product.model);
   const [price, setPrice] = useState(product.price !== null ? String(product.price) : "");
   const [description, setDescription] = useState(product.description);
+  const [category, setCategory] = useState<ProductCategory>(product.category);
   const [available, setAvailable] = useState(product.available);
   const [quantity, setQuantity] = useState(product.quantity !== null ? String(product.quantity) : "");
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [failed, setFailed] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -48,16 +53,19 @@ function InfoSection({ product, onSaved }: { product: SerializedProduct; onSaved
         model,
         price: price.trim() === "" ? null : Number(price),
         description,
+        category,
         available,
         quantity: quantity ? Number(quantity) : null,
       }),
     });
     setSaving(false);
     if (res.ok) {
+      setFailed(false);
       setMessage("Modifications enregistrées.");
       onSaved();
     } else {
       const data = await res.json();
+      setFailed(true);
       setMessage(data.error || "Erreur lors de l'enregistrement.");
     }
   };
@@ -69,48 +77,122 @@ function InfoSection({ product, onSaved }: { product: SerializedProduct; onSaved
   };
 
   return (
-    <section className="bg-white rounded-2xl card-shadow p-6">
-      <h2 className="font-display font-bold text-lg text-[var(--color-navy)] mb-4">Informations</h2>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <div className="grid sm:grid-cols-2 gap-4">
+    <section className="cd-ad-card">
+      <h2 className="cd-ad-card__title">Informations</h2>
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-5">
+        <div className="grid sm:grid-cols-2 gap-5">
           <div>
-            <label className="block text-sm font-semibold text-[var(--color-navy)] mb-1">Nom</label>
-            <input value={name} onChange={(e) => setName(e.target.value)} className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm" />
+            <label htmlFor="product-name" className="cd-ad-label">Nom</label>
+            <input
+              id="product-name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="cd-ad-field"
+            />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-[var(--color-navy)] mb-1">Modèle</label>
-            <input value={model} onChange={(e) => setModel(e.target.value)} className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm" />
+            <label htmlFor="product-model" className="cd-ad-label">Modèle</label>
+            <input
+              id="product-model"
+              value={model}
+              onChange={(e) => setModel(e.target.value)}
+              className="cd-ad-field"
+            />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-[var(--color-navy)] mb-1">Prix (FCFA)</label>
-            <input type="number" min={0} value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Vide = Prix à confirmer" className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm" />
+            <label htmlFor="product-price" className="cd-ad-label">Prix (FCFA)</label>
+            <input
+              id="product-price"
+              type="number"
+              min={0}
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder="Vide = prix à confirmer"
+              className="cd-ad-field cd-num"
+            />
             {price.trim() === "" && (
-              <p className="text-xs text-amber-600 mt-1">
-                Le produit s&apos;affichera avec « Prix à confirmer » et ne pourra pas être commandé tant qu&apos;un prix n&apos;est pas saisi.
+              <p className="text-xs text-[var(--cd-gold-700)] mt-2">
+                Le produit s&apos;affichera avec « Prix à confirmer » et ne pourra pas être commandé
+                tant qu&apos;un prix n&apos;est pas saisi.
               </p>
             )}
           </div>
           <div>
-            <label className="block text-sm font-semibold text-[var(--color-navy)] mb-1">Quantité disponible</label>
-            <input type="number" min={0} value={quantity} onChange={(e) => setQuantity(e.target.value)} className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm" />
+            <label htmlFor="product-quantity" className="cd-ad-label">Quantité disponible</label>
+            <input
+              id="product-quantity"
+              type="number"
+              min={0}
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              className="cd-ad-field cd-num"
+            />
+          </div>
+          <div className="sm:col-span-2">
+            <label htmlFor="product-category" className="cd-ad-label">Catégorie</label>
+            <select
+              id="product-category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value as ProductCategory)}
+              className="cd-ad-field sm:max-w-xs"
+            >
+              {CATEGORY_VALUES.map((value) => (
+                <option key={value} value={value}>
+                  {CATEGORY_LABELS[value]}
+                </option>
+              ))}
+            </select>
+            {category === UNCLASSIFIED && (
+              <p className="text-xs text-[var(--cd-gold-700)] mt-2">
+                Tant que le produit est « à classer », il n&apos;apparaît dans aucune catégorie de
+                la boutique. Il reste visible dans le catalogue et la recherche.
+              </p>
+            )}
           </div>
         </div>
+
         <div>
-          <label className="block text-sm font-semibold text-[var(--color-navy)] mb-1">Description</label>
-          <textarea rows={4} value={description} onChange={(e) => setDescription(e.target.value)} className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm" />
+          <label htmlFor="product-description" className="cd-ad-label">Description</label>
+          <textarea
+            id="product-description"
+            rows={4}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="cd-ad-field"
+          />
         </div>
-        <label className="flex items-center gap-2 text-sm font-medium text-[var(--color-navy)]">
-          <input type="checkbox" checked={available} onChange={(e) => setAvailable(e.target.checked)} />
-          Produit disponible à la vente
+
+        <label className="flex items-start gap-3 text-sm">
+          <input
+            type="checkbox"
+            checked={available}
+            onChange={(e) => setAvailable(e.target.checked)}
+            className="mt-0.5 w-4 h-4 accent-[var(--cd-navy-800)]"
+          />
+          <span>
+            <span className="font-semibold block">Visible dans la boutique</span>
+            <span className="text-[var(--cd-ink-soft)] text-xs">
+              Décoché, le produit reste en base et dans l&apos;administration, mais disparaît de la
+              boutique et des recherches.
+            </span>
+          </span>
         </label>
 
-        {message && <p className="text-sm text-[var(--color-navy)] font-medium">{message}</p>}
+        {message && (
+          <p className={`cd-ad-note ${failed ? "cd-ad-note--danger" : "cd-ad-note--ok"}`} role="status">
+            {message}
+          </p>
+        )}
 
-        <div className="flex flex-wrap gap-3">
-          <button type="submit" disabled={saving} className="btn-primary disabled:opacity-50">
-            {saving ? "Enregistrement..." : "Enregistrer"}
+        <div className="flex flex-wrap items-center gap-4 pt-1">
+          <button type="submit" disabled={saving} className="cd-ad-btn cd-ad-btn--solid">
+            {saving ? "Enregistrement…" : "Enregistrer"}
           </button>
-          <button type="button" onClick={handleDelete} className="text-sm font-semibold text-red-600 hover:underline">
+          <Link href={`/produit/${product.slug}`} target="_blank" className="cd-ad-link">
+            Voir la fiche publique
+          </Link>
+          <button type="button" onClick={handleDelete} className="cd-ad-link cd-ad-link--danger ml-auto">
             Supprimer ce produit
           </button>
         </div>
@@ -165,11 +247,13 @@ function ImagesSection({ product, onChanged }: { product: SerializedProduct; onC
   };
 
   return (
-    <section className="bg-white rounded-2xl card-shadow p-6">
-      <h2 className="font-display font-bold text-lg text-[var(--color-navy)] mb-4">Photos</h2>
+    <section className="cd-ad-card">
+      <h2 className="cd-ad-card__title">
+        Photos <span className="cd-num text-[var(--cd-ink-faint)]">({product.images.length})</span>
+      </h2>
 
       {product.images.length > 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5">
           {product.images.map((img) => (
             <ImageThumb
               key={img.id}
@@ -184,13 +268,22 @@ function ImagesSection({ product, onChanged }: { product: SerializedProduct; onC
         </div>
       )}
 
-      <label className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-navy)] cursor-pointer btn-outline">
-        {uploading ? "Envoi en cours..." : "Ajouter une photo"}
-        <input type="file" accept="image/jpeg,image/png,image/webp,image/avif" className="hidden" onChange={handleUpload} disabled={uploading} />
+      <label className="cd-ad-btn cd-ad-btn--ghost cursor-pointer mt-5">
+        {uploading ? "Envoi en cours…" : "Ajouter une photo"}
+        <input
+          type="file"
+          accept="image/jpeg,image/png,image/webp,image/avif"
+          className="hidden"
+          onChange={handleUpload}
+          disabled={uploading}
+        />
       </label>
-      {error && <p className="text-sm text-red-600 font-medium mt-2">{error}</p>}
-      <p className="text-xs text-[var(--color-navy)]/50 mt-2">
-        Ajoutez plusieurs photos (devant, côté, arrière...). La première photo ajoutée devient l&apos;image principale.
+
+      {error && <p className="cd-ad-note cd-ad-note--danger mt-3">{error}</p>}
+
+      <p className="text-xs text-[var(--cd-ink-faint)] mt-3 max-w-lg">
+        Ajoutez plusieurs photos (devant, côté, arrière…). La photo marquée « Principale » est celle
+        qui apparaît dans la boutique.
       </p>
     </section>
   );
@@ -228,45 +321,47 @@ function ImageThumb({
   };
 
   return (
-    <div className="rounded-lg overflow-hidden bg-[var(--color-cream-dark)] border border-[var(--color-navy)]/10">
-      <div className="relative aspect-square group">
+    <div className="border border-[var(--cd-rule)] bg-[var(--cd-cream-50)]">
+      <div className="relative aspect-square group bg-[var(--cd-cream-100)]">
         <Image src={image.url} alt={image.alt || productName} fill sizes="200px" className="object-cover" />
         {image.isMain && (
-          <span className="absolute top-1 left-1 bg-[var(--color-gold)] text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
+          <span className="cd-eyebrow absolute top-1.5 left-1.5 bg-[var(--cd-navy-900)] text-[var(--cd-gold-500)] text-[0.5rem] px-1.5 py-1">
             Principale
           </span>
         )}
-        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 transition-opacity">
+        <div className="absolute inset-0 bg-[var(--cd-navy-900)]/70 opacity-0 group-hover:opacity-100 focus-within:opacity-100 flex flex-col items-center justify-center gap-2 transition-opacity">
           {!image.isMain && (
-            <button onClick={onSetMain} className="text-white text-xs font-semibold underline">
+            <button type="button" onClick={onSetMain} className="cd-eyebrow text-[0.55rem] text-white underline underline-offset-2">
               Définir principale
             </button>
           )}
-          <button onClick={onDelete} className="text-white text-xs font-semibold underline">
+          <button type="button" onClick={onDelete} className="cd-eyebrow text-[0.55rem] text-white underline underline-offset-2">
             Supprimer
           </button>
         </div>
       </div>
-      <div className="p-2">
+
+      <div className="p-2 border-t border-[var(--cd-rule)]">
         {editing ? (
           <div className="flex gap-1">
             <input
               value={alt}
               onChange={(e) => setAlt(e.target.value)}
               placeholder="Légende de la photo"
-              className="w-full rounded border border-[var(--color-navy)]/20 px-2 py-1 text-xs"
+              className="w-full min-w-0 border border-[var(--cd-rule)] px-2 py-1 text-xs outline-none focus:border-[var(--cd-navy-800)]"
             />
-            <button onClick={saveAlt} disabled={saving} className="text-xs font-semibold text-[var(--color-gold-dark)] shrink-0">
+            <button type="button" onClick={saveAlt} disabled={saving} className="cd-ad-link shrink-0">
               OK
             </button>
           </div>
         ) : (
           <button
+            type="button"
             onClick={() => setEditing(true)}
-            className="w-full text-left text-xs text-[var(--color-navy)]/60 truncate hover:text-[var(--color-navy)]"
+            className="w-full text-left text-xs text-[var(--cd-ink-faint)] truncate hover:text-[var(--cd-navy-800)]"
             title="Modifier la légende de cette photo"
           >
-            {image.alt || "Ajouter une légende..."}
+            {image.alt || "Ajouter une légende…"}
           </button>
         )}
       </div>
@@ -315,44 +410,62 @@ function SizesSection({ product, onChanged }: { product: SerializedProduct; onCh
   };
 
   return (
-    <section className="bg-white rounded-2xl card-shadow p-6">
-      <h2 className="font-display font-bold text-lg text-[var(--color-navy)] mb-4">Pointures</h2>
+    <section className="cd-ad-card">
+      <h2 className="cd-ad-card__title">Pointures</h2>
 
       {product.sizes.length > 0 ? (
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex flex-wrap gap-2 mt-5">
           {product.sizes.map((s) => (
             <div
               key={s.id}
-              className={`flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-semibold ${
-                s.available ? "border-green-300 bg-green-50 text-green-700" : "border-red-200 bg-red-50 text-red-500"
+              className={`flex items-center gap-2.5 border px-3 py-2 ${
+                s.available
+                  ? "border-[var(--cd-rule)] bg-[var(--cd-surface)]"
+                  : "border-[var(--cd-cream-300)] bg-[var(--cd-cream-100)] text-[var(--cd-ink-faint)]"
               }`}
             >
-              <span>{s.label}</span>
-              <button onClick={() => toggleSize(s.id, s.available)} className="underline text-xs">
+              <span className={`cd-num text-sm font-semibold ${s.available ? "" : "line-through"}`}>
+                {s.label}
+              </span>
+              <button
+                type="button"
+                onClick={() => toggleSize(s.id, s.available)}
+                className="cd-eyebrow text-[0.55rem] text-[var(--cd-gold-700)]"
+              >
                 {s.available ? "Désactiver" : "Activer"}
               </button>
-              <button onClick={() => deleteSize(s.id)} aria-label={`Supprimer la pointure ${s.label}`} className="text-xs">
+              <button
+                type="button"
+                onClick={() => deleteSize(s.id)}
+                aria-label={`Supprimer la pointure ${s.label}`}
+                className="text-[var(--cd-ink-faint)] hover:text-[#9b302a] text-xs leading-none"
+              >
                 ✕
               </button>
             </div>
           ))}
         </div>
       ) : (
-        <p className="text-sm text-[var(--color-navy)]/50 mb-4">Aucune pointure enregistrée.</p>
+        <p className="text-sm text-[var(--cd-ink-faint)] mt-5">
+          Aucune pointure enregistrée. Ce produit se commande en « Taille unique ».
+        </p>
       )}
 
-      <form onSubmit={addSize} className="flex gap-2">
+      <form onSubmit={addSize} className="flex flex-wrap gap-2 mt-5">
+        <label htmlFor="new-size" className="sr-only">Nouvelle pointure</label>
         <input
+          id="new-size"
           value={newSize}
           onChange={(e) => setNewSize(e.target.value)}
-          placeholder="Ex : 42"
-          className="rounded-lg border border-[var(--color-navy)]/20 px-4 py-2 text-sm w-32"
+          placeholder="Ex : 42-43"
+          className="cd-ad-field cd-num w-36"
         />
-        <button type="submit" disabled={busy} className="btn-outline disabled:opacity-50">
+        <button type="submit" disabled={busy} className="cd-ad-btn cd-ad-btn--ghost">
           Ajouter
         </button>
       </form>
-      {error && <p className="text-sm text-red-600 font-medium mt-2">{error}</p>}
+
+      {error && <p className="cd-ad-note cd-ad-note--danger mt-3">{error}</p>}
     </section>
   );
 }

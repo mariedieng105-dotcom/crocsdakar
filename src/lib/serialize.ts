@@ -13,6 +13,7 @@ export function serializeProduct(product: ProductWithRelations) {
     slug: product.slug,
     price: product.price,
     description: product.description,
+    category: product.category,
     available: product.available,
     quantity: product.quantity,
     createdAt: product.createdAt.toISOString(),

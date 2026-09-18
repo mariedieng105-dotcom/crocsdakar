@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/components/CartProvider";
 import { formatFCFA, whatsappLink, SHOP } from "@/lib/shop";
+import { SINGLE_SIZE_LABEL } from "@/lib/cart-types";
+import { WhatsAppGlyph, ArrowRightIcon } from "@/components/Icons";
 
 type OrderItemResult = {
   productName: string;
@@ -27,7 +29,7 @@ type OrderResult = {
 
 function buildWhatsappMessage(order: OrderResult): string {
   const lines: string[] = [];
-  lines.push("Bonjour Diaby Store,");
+  lines.push(`Bonjour ${SHOP.storeName},`);
   lines.push("");
   lines.push(`Je souhaite passer cette commande (N° ${order.orderNumber}) :`);
   lines.push("");
@@ -35,7 +37,9 @@ function buildWhatsappMessage(order: OrderResult): string {
   for (const item of order.items) {
     lines.push(`Produit : ${item.productName}`);
     lines.push(`Modèle : ${item.model}`);
-    lines.push(`Pointure : ${item.size}`);
+    lines.push(
+      item.size === SINGLE_SIZE_LABEL ? `Taille : ${item.size}` : `Pointure : ${item.size}`
+    );
     lines.push(`Quantité : ${item.quantity}`);
     lines.push(`Prix unitaire : ${formatFCFA(item.unitPrice)}`);
     lines.push(`Sous-total : ${formatFCFA(item.lineTotal)}`);
@@ -43,7 +47,7 @@ function buildWhatsappMessage(order: OrderResult): string {
   }
 
   lines.push(`Total produits : ${formatFCFA(order.subtotal)}`);
-  lines.push("Frais de livraison : à confirmer par Diaby Store");
+  lines.push(`Frais de livraison : à confirmer par ${SHOP.storeName}`);
   lines.push(`Total (hors livraison) : ${formatFCFA(order.total)}`);
   lines.push("");
   lines.push(`Nom : ${order.customerName}`);
@@ -56,6 +60,9 @@ function buildWhatsappMessage(order: OrderResult): string {
 
   return lines.join("\n");
 }
+
+const FIELD_CLASS =
+  "w-full border border-[var(--cd-rule)] bg-[var(--cd-surface)] px-4 py-3 text-base outline-none focus:border-[var(--cd-navy-800)] transition-colors";
 
 export default function CheckoutPage() {
   const { items, subtotal, clear } = useCart();
@@ -71,9 +78,12 @@ export default function CheckoutPage() {
 
   if (items.length === 0 && !confirmedOrder) {
     return (
-      <div className="container-shop py-16 text-center">
-        <h1 className="font-display font-bold text-2xl text-[var(--color-navy)] mb-3">Votre panier est vide</h1>
-        <Link href="/catalogue" className="btn-primary">Voir le catalogue</Link>
+      <div className="cd-container py-20 sm:py-28 text-center">
+        <h1 className="cd-display cd-display-l">Votre panier est vide</h1>
+        <Link href="/catalogue" className="cd-btn cd-btn--solid mt-8">
+          Voir la boutique
+          <ArrowRightIcon className="w-4 h-4" />
+        </Link>
       </div>
     );
   }
@@ -81,30 +91,39 @@ export default function CheckoutPage() {
   if (confirmedOrder) {
     const waLink = whatsappLink(buildWhatsappMessage(confirmedOrder));
     return (
-      <div className="container-shop py-16 max-w-lg mx-auto text-center">
-        <div className="w-16 h-16 rounded-full bg-green-100 text-green-600 flex items-center justify-center mx-auto mb-4">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-        <h1 className="font-display font-bold text-2xl text-[var(--color-navy)] mb-2">
-          Commande enregistrée
+      <div className="cd-container py-16 sm:py-24 max-w-xl mx-auto text-center">
+        <p className="cd-eyebrow text-[var(--cd-gold-700)]">Commande enregistrée</p>
+        <h1 className="cd-display cd-display-l mt-4">
+          Merci,
+          <br />
+          {confirmedOrder.customerName.split(" ")[0]}
         </h1>
-        <p className="text-[var(--color-navy)]/70 mb-1">
-          Numéro de commande : <span className="font-semibold">{confirmedOrder.orderNumber}</span>
+
+        <p className="cd-num cd-display text-[1.3rem] mt-7 tracking-normal">
+          N° {confirmedOrder.orderNumber}
         </p>
-        <p className="text-[var(--color-navy)]/60 mb-6">
-          Finalisez votre commande en l&apos;envoyant à {SHOP.storeName} sur WhatsApp. Les frais de
-          livraison vous seront confirmés selon votre adresse.
+
+        <p className="text-[var(--cd-ink-soft)] mt-5 leading-relaxed">
+          Dernière étape : envoyez-nous votre commande sur WhatsApp. Nous vous confirmons les frais
+          de livraison selon votre adresse, et vous payez à la réception.
         </p>
-        <a href={waLink} target="_blank" rel="noopener noreferrer" className="btn-whatsapp w-full sm:w-auto">
-          Envoyer la commande sur WhatsApp
+
+        <a
+          href={waLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="cd-btn cd-btn--whatsapp w-full mt-8"
+        >
+          <WhatsAppGlyph className="w-5 h-5" />
+          Envoyer ma commande
         </a>
-        <div className="mt-6">
-          <Link href="/catalogue" className="text-sm text-[var(--color-gold-dark)] hover:underline">
-            Continuer mes achats
-          </Link>
-        </div>
+
+        <Link
+          href="/catalogue"
+          className="cd-eyebrow text-[0.62rem] text-[var(--cd-gold-700)] inline-block mt-7"
+        >
+          Continuer mes achats
+        </Link>
       </div>
     );
   }
@@ -114,7 +133,7 @@ export default function CheckoutPage() {
     setError(null);
 
     if (!customerName.trim() || !phone.trim() || !address.trim()) {
-      setError("Merci de remplir votre nom, votre téléphone et votre adresse.");
+      setError("Merci de renseigner votre nom, votre téléphone et votre adresse.");
       return;
     }
 
@@ -129,7 +148,11 @@ export default function CheckoutPage() {
           address,
           zone: zone || undefined,
           notes: notes || undefined,
-          items: items.map((i) => ({ productId: i.productId, size: i.size, quantity: i.quantity })),
+          items: items.map((i) => ({
+            productId: i.productId,
+            size: i.size,
+            quantity: i.quantity,
+          })),
         }),
       });
 
@@ -151,107 +174,126 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="container-shop py-10">
-      <h1 className="font-display font-bold text-2xl sm:text-3xl text-[var(--color-navy)] mb-8">
-        Informations de livraison
-      </h1>
+    <div className="cd-container py-10 sm:py-14">
+      <p className="cd-eyebrow text-[var(--cd-gold-700)]">Commande</p>
+      <h1 className="cd-display cd-display-l mt-3 mb-10">Vos coordonnées</h1>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        <form onSubmit={handleSubmit} className="lg:col-span-2 flex flex-col gap-4 bg-white rounded-2xl p-5 sm:p-6 card-shadow">
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:gap-14">
+        <form onSubmit={handleSubmit} className="min-w-0 flex flex-col gap-5">
           <div>
-            <label htmlFor="customerName" className="block text-sm font-semibold text-[var(--color-navy)] mb-1">
+            <label htmlFor="customerName" className="cd-eyebrow text-[0.62rem] text-[var(--cd-ink-faint)] block mb-2">
               Nom complet *
             </label>
             <input
               id="customerName"
               required
+              autoComplete="name"
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
-              className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm outline-none focus:border-[var(--color-gold)]"
+              className={FIELD_CLASS}
             />
           </div>
 
           <div>
-            <label htmlFor="phone" className="block text-sm font-semibold text-[var(--color-navy)] mb-1">
-              Numéro de téléphone *
+            <label htmlFor="phone" className="cd-eyebrow text-[0.62rem] text-[var(--cd-ink-faint)] block mb-2">
+              Téléphone *
             </label>
             <input
               id="phone"
               required
               type="tel"
+              inputMode="tel"
+              autoComplete="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="77 123 45 67"
-              className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm outline-none focus:border-[var(--color-gold)]"
+              className={FIELD_CLASS}
             />
           </div>
 
           <div>
-            <label htmlFor="address" className="block text-sm font-semibold text-[var(--color-navy)] mb-1">
+            <label htmlFor="address" className="cd-eyebrow text-[0.62rem] text-[var(--cd-ink-faint)] block mb-2">
               Adresse de livraison *
             </label>
             <input
               id="address"
               required
+              autoComplete="street-address"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm outline-none focus:border-[var(--color-gold)]"
+              className={FIELD_CLASS}
             />
           </div>
 
           <div>
-            <label htmlFor="zone" className="block text-sm font-semibold text-[var(--color-navy)] mb-1">
-              Quartier / zone
+            <label htmlFor="zone" className="cd-eyebrow text-[0.62rem] text-[var(--cd-ink-faint)] block mb-2">
+              Quartier ou zone
             </label>
             <input
               id="zone"
               value={zone}
               onChange={(e) => setZone(e.target.value)}
-              className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm outline-none focus:border-[var(--color-gold)]"
+              className={FIELD_CLASS}
             />
           </div>
 
           <div>
-            <label htmlFor="notes" className="block text-sm font-semibold text-[var(--color-navy)] mb-1">
-              Informations supplémentaires
+            <label htmlFor="notes" className="cd-eyebrow text-[0.62rem] text-[var(--cd-ink-faint)] block mb-2">
+              Précisions pour la livraison
             </label>
             <textarea
               id="notes"
+              rows={3}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              rows={3}
-              className="w-full rounded-lg border border-[var(--color-navy)]/20 px-4 py-2.5 text-sm outline-none focus:border-[var(--color-gold)]"
+              className={FIELD_CLASS}
             />
           </div>
 
-          {error && <p className="text-sm text-red-600 font-medium">{error}</p>}
+          {error && (
+            <p className="text-sm font-semibold text-[#a3302a]" role="alert">
+              {error}
+            </p>
+          )}
 
-          <button type="submit" disabled={submitting} className="btn-primary disabled:opacity-50">
-            {submitting ? "Enregistrement..." : "Valider la commande"}
+          <button type="submit" disabled={submitting} className="cd-btn cd-btn--solid">
+            {submitting ? "Enregistrement…" : "Valider la commande"}
           </button>
-          <p className="text-xs text-[var(--color-navy)]/50">
-            Paiement à la livraison. Vous confirmerez votre commande sur WhatsApp à l&apos;étape suivante.
+
+          <p className="text-xs text-[var(--cd-ink-soft)]">
+            Paiement à la livraison. Vous confirmerez votre commande sur WhatsApp à l&rsquo;étape
+            suivante.
           </p>
         </form>
 
-        <div className="bg-white rounded-2xl p-5 card-shadow h-fit">
-          <h2 className="font-display font-bold text-lg text-[var(--color-navy)] mb-4">Récapitulatif</h2>
-          <ul className="flex flex-col gap-3 mb-4">
+        <aside className="min-w-0 lg:sticky lg:top-[108px] lg:self-start bg-[var(--cd-bg-alt)] p-6 sm:p-7 h-fit">
+          <h2 className="cd-display cd-display-m">Récapitulatif</h2>
+
+          <ul className="mt-6 space-y-4">
             {items.map((item) => (
-              <li key={`${item.productId}-${item.size}`} className="flex justify-between text-sm">
-                <span className="text-[var(--color-navy)]/70">
-                  {item.name} ({item.model}) — P.{item.size} × {item.quantity}
+              <li key={`${item.productId}-${item.size}`} className="flex justify-between gap-4 text-sm">
+                <span className="min-w-0">
+                  <span className="block font-semibold leading-snug">{item.name}</span>
+                  <span className="block text-[var(--cd-ink-soft)] text-[0.82rem] mt-0.5">
+                    {item.size === SINGLE_SIZE_LABEL ? item.size : `Pointure ${item.size}`} ×{" "}
+                    {item.quantity}
+                  </span>
                 </span>
-                <span className="font-semibold text-[var(--color-navy)]">{formatFCFA(item.price * item.quantity)}</span>
+                <span className="cd-num font-semibold shrink-0">
+                  {formatFCFA(item.price * item.quantity)}
+                </span>
               </li>
             ))}
           </ul>
-          <div className="border-t border-[var(--color-navy)]/10 pt-3 flex justify-between font-semibold text-[var(--color-navy)]">
-            <span>Sous-total</span>
-            <span>{formatFCFA(subtotal)}</span>
+
+          <div className="mt-6 pt-5 border-t border-[var(--cd-cream-300)] flex justify-between gap-4">
+            <span className="cd-eyebrow text-[0.62rem] text-[var(--cd-ink-faint)]">Sous-total</span>
+            <span className="cd-num font-semibold">{formatFCFA(subtotal)}</span>
           </div>
-          <p className="text-xs text-[var(--color-navy)]/50 mt-2">+ frais de livraison à confirmer</p>
-        </div>
+          <p className="text-xs text-[var(--cd-ink-soft)] mt-3">
+            Frais de livraison confirmés sur WhatsApp selon votre adresse.
+          </p>
+        </aside>
       </div>
     </div>
   );

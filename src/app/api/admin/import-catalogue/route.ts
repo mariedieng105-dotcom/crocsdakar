@@ -7,6 +7,8 @@ import {
   readCatalogueImageFile,
   transformProduct,
   imageAltFor,
+  categoryFromSource,
+  HIDDEN_ON_IMPORT_SLUGS,
 } from "@/lib/catalogue-import";
 
 // 232 photos à envoyer peuvent dépasser la durée par défaut d'une fonction
@@ -120,7 +122,8 @@ export async function POST() {
           slug: p.id,
           price: t.price,
           description: p.notes || "",
-          available: true,
+          category: categoryFromSource(p),
+          available: !HIDDEN_ON_IMPORT_SLUGS.has(p.id),
           quantity: t.quantity,
           sizes: { create: t.sizes },
         },

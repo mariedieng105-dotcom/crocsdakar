@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { verifyAdminCredentials, createAdminSession } from "@/lib/auth";
+import {
+  verifyAdminCredentials,
+  createAdminSession,
+  AdminConfigMissingError,
+  AdminPasswordHashInvalidError,
+} from "@/lib/auth";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -27,8 +32,23 @@ export async function POST(request: NextRequest) {
     valid = await verifyAdminCredentials(email, password);
   } catch (err) {
     console.error(err);
+    if (err instanceof AdminPasswordHashInvalidError) {
+      return NextResponse.json(
+        {
+          error:
+            "Le mot de passe administrateur enregistré sur le serveur est illisible. Regénérez ADMIN_PASSWORD_HASH et collez-le entre guillemets simples.",
+        },
+        { status: 500 }
+      );
+    }
+    if (err instanceof AdminConfigMissingError) {
+      return NextResponse.json(
+        { error: `Configuration serveur incomplète : ${err.message}` },
+        { status: 500 }
+      );
+    }
     return NextResponse.json(
-      { error: "Configuration serveur incomplète (variables d'environnement admin)." },
+      { error: "Erreur serveur pendant la connexion." },
       { status: 500 }
     );
   }

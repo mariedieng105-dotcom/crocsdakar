@@ -58,6 +58,8 @@ export function readCatalogueImageFile(relativePath: string): Buffer {
  *   quantité du produit est la somme des quantités par pointure.
  * - Sinon, toutes les pointures de `sizes` sont marquées disponibles telles quelles
  *   (les pointures déjà en rupture ont été retirées de cette liste en amont).
+ * - Le nom et le modèle sont inversés par rapport au fichier source : voir
+ *   ci-dessous.
  */
 export function transformProduct(p: CatalogueSourceProduct) {
   const price = p.price_status === "a_confirmer" || p.price_fcfa == null ? null : p.price_fcfa;
@@ -71,7 +73,39 @@ export function transformProduct(p: CatalogueSourceProduct) {
     ? Object.values(stockBySize).reduce((sum, n) => sum + n, 0)
     : null;
 
-  return { price, quantity, sizes };
+  return { ...labelsFor(p), price, quantity, sizes };
+}
+
+/**
+ * Le fichier source met la famille dans `name` (« Crocs Classic ») et la
+ * déclinaison dans `model` (« Crocs Classic — Bleu marine »). Le site attend
+ * l'inverse : `name` est le titre de la carte et de la fiche produit, `model`
+ * s'affiche en petites capitales au-dessus. Sans cette inversion, quinze
+ * produits s'afficheraient sous le même titre « Crocs Classic » et la couleur
+ * ne serait lisible que dans la ligne secondaire, tronquée sur mobile.
+ */
+export function labelsFor(p: CatalogueSourceProduct): { name: string; model: string } {
+  return { name: p.model, model: p.name };
+}
+
+/**
+ * Nom du fichier tel qu'il est déposé sur Vercel Blob. Le nom d'origine de la
+ * photo est conservé à dessein : c'est lui qui permet, lors d'une reprise
+ * d'import, de reconnaître les photos déjà envoyées.
+ */
+export function blobPathFor(p: CatalogueSourceProduct, index: number, productId: string): string {
+  const filename = p.images[index].split("/").pop() ?? `image-${index}.jpg`;
+  return `produits/${productId}/${index}-${filename}`;
+}
+
+/**
+ * Fragment recherché dans l'URL d'une photo déjà en base pour savoir si la
+ * photo n° `index` du fichier source a déjà été envoyée. L'extension est
+ * exclue : Vercel Blob insère un suffixe aléatoire juste avant elle.
+ */
+export function blobMarkerFor(p: CatalogueSourceProduct, index: number): string {
+  const filename = p.images[index].split("/").pop() ?? `image-${index}.jpg`;
+  return `/${index}-${filename.replace(/\.[^.]+$/, "")}`;
 }
 
 /**
@@ -82,8 +116,9 @@ export function transformProduct(p: CatalogueSourceProduct) {
  * (modifiable ensuite depuis l'admin, photo par photo).
  */
 export function imageAltFor(p: CatalogueSourceProduct, index: number): string {
+  const { name } = labelsFor(p);
   if (p.id === "pins-crocs") {
-    return `${p.name} — Design ${index + 1}/${p.images.length}`;
+    return `${name} — Design ${index + 1}/${p.images.length}`;
   }
-  return p.name;
+  return name;
 }

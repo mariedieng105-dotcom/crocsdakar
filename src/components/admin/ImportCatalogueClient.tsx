@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { formatPrice } from "@/lib/shop";
 
-type PendingProduct = {
+type ProductRow = {
   slug: string;
   name: string;
   model: string;
@@ -11,6 +11,10 @@ type PendingProduct = {
   quantity: number | null;
   sizes: { label: string; available: boolean }[];
   imagesCount: number;
+  imagesPresent: number;
+  missingImages: number;
+  missingSizes: number;
+  status: "absent" | "partiel" | "complet";
 };
 
 type Preview = {
@@ -19,25 +23,41 @@ type Preview = {
   totalImagesInSource: number;
   totalSizesInSource: number;
   alreadyImportedCount: number;
-  alreadyImported: { slug: string; name: string; model: string }[];
+  partialCount: number;
   pendingImportCount: number;
-  pendingImport: PendingProduct[];
+  remainingImages: number;
+  products: ProductRow[];
+  pendingImport: ProductRow[];
 };
 
-type ImportResult = {
+type ImportRound = {
+  productsCreated: number;
+  productsCompleted: number;
+  imagesUploaded: number;
+  sizesCreated: number;
+  remainingProducts: number;
+  done: boolean;
+  errors: { slug: string; error: string }[];
+};
+
+type Progress = {
   productsCreated: number;
   imagesUploaded: number;
   sizesCreated: number;
-  created: { slug: string; name: string; imagesUploaded: number; sizesCreated: number }[];
+  remainingProducts: number;
+  done: boolean;
   errors: { slug: string; error: string }[];
 };
+
+/** Garde-fou : l'import complet demande une dizaine de tranches, jamais cent. */
+const MAX_ROUNDS = 100;
 
 export default function ImportCatalogueClient() {
   const [preview, setPreview] = useState<Preview | null>(null);
   const [loadingPreview, setLoadingPreview] = useState(true);
   const [previewError, setPreviewError] = useState<string | null>(null);
   const [importing, setImporting] = useState(false);
-  const [result, setResult] = useState<ImportResult | null>(null);
+  const [progress, setProgress] = useState<Progress | null>(null);
   const [resultError, setResultError] = useState<string | null>(null);
 
   const loadPreview = async () => {
@@ -67,30 +87,59 @@ export default function ImportCatalogueClient() {
     if (!preview || preview.pendingImportCount === 0) return;
     if (
       !confirm(
-        `Importer ${preview.pendingImportCount} produits et leurs photos maintenant ? Cette action écrit dans la base de données de production.`
+        `Importer ${preview.pendingImportCount} produits et ${preview.remainingImages} photos maintenant ? Cette action écrit dans la base de données du site.`
       )
     ) {
       return;
     }
+
     setImporting(true);
     setResultError(null);
-    try {
-      const res = await fetch("/api/admin/import-catalogue", { method: "POST" });
-      const data = await res.json();
-      if (!res.ok) {
-        setResultError(data.error || "Erreur lors de l'importation.");
-      } else {
-        setResult(data);
+    const total: Progress = {
+      productsCreated: 0,
+      imagesUploaded: 0,
+      sizesCreated: 0,
+      remainingProducts: preview.pendingImportCount,
+      done: false,
+      errors: [],
+    };
+    setProgress({ ...total });
+
+    // L'import avance par tranches : le serveur rend la main avant la coupure
+    // de Vercel et indique ce qui reste. On relance tant que ce n'est pas fini,
+    // sans jamais dupliquer quoi que ce soit (l'import est idempotent).
+    for (let round = 0; round < MAX_ROUNDS; round++) {
+      let data: ImportRound;
+      try {
+        const res = await fetch("/api/admin/import-catalogue", { method: "POST" });
+        data = await res.json();
+        if (!res.ok) {
+          setResultError((data as unknown as { error?: string }).error || "Erreur lors de l'importation.");
+          break;
+        }
+      } catch {
+        setResultError(
+          "La connexion a été interrompue pendant l'import. Les produits déjà importés sont conservés : recliquez sur « Importer » pour reprendre là où il s'est arrêté."
+        );
+        break;
       }
-    } catch {
-      setResultError("Impossible de contacter le serveur.");
-    } finally {
-      setImporting(false);
-      loadPreview();
+
+      total.productsCreated += data.productsCreated;
+      total.imagesUploaded += data.imagesUploaded;
+      total.sizesCreated += data.sizesCreated;
+      total.remainingProducts = data.remainingProducts;
+      total.done = data.done;
+      total.errors = [...total.errors, ...data.errors];
+      setProgress({ ...total });
+
+      if (data.done) break;
     }
+
+    setImporting(false);
+    loadPreview();
   };
 
-  if (loadingPreview) {
+  if (loadingPreview && !preview) {
     return <p className="text-sm text-[var(--cd-ink-soft)]">Vérification du catalogue à importer…</p>;
   }
 
@@ -108,8 +157,10 @@ export default function ImportCatalogueClient() {
           <li>Produits dans le fichier source : <strong>{preview.totalInSource}</strong></li>
           <li>Photos dans le fichier source : <strong>{preview.totalImagesInSource}</strong></li>
           <li>Pointures dans le fichier source : <strong>{preview.totalSizesInSource}</strong></li>
-          <li>Déjà importés (seront ignorés) : <strong>{preview.alreadyImportedCount}</strong></li>
-          <li>Restant à importer : <strong>{preview.pendingImportCount}</strong></li>
+          <li>Déjà importés en entier (seront ignorés) : <strong>{preview.alreadyImportedCount}</strong></li>
+          <li>Importés à moitié (seront complétés) : <strong>{preview.partialCount}</strong></li>
+          <li>Restant à importer ou compléter : <strong>{preview.pendingImportCount}</strong></li>
+          <li>Photos restant à envoyer : <strong>{preview.remainingImages}</strong></li>
           <li>
             Stockage photos (Vercel Blob) :{" "}
             <strong className={preview.blobConfigured ? "text-[#24603a]" : "text-[#9b302a]"}>
@@ -126,16 +177,18 @@ export default function ImportCatalogueClient() {
 
       {preview.pendingImportCount === 0 ? (
         <div className="cd-ad-note cd-ad-note--ok">
-          Tous les produits du catalogue initial sont déjà importés. Aucune action nécessaire.
+          Tout le catalogue initial est importé : {preview.totalInSource} produits,{" "}
+          {preview.totalImagesInSource} photos et {preview.totalSizesInSource} pointures. Aucune
+          action nécessaire.
         </div>
       ) : (
         <>
           <div className="cd-ad-card">
             <h2 className="cd-ad-card__title">
-              Aperçu des {preview.pendingImportCount} produits à importer
+              Aperçu des {preview.pendingImportCount} produits à traiter
             </h2>
-            <div className="overflow-x-auto mt-5">
-              <table className="cd-ad-table min-w-[640px]">
+            <div className="overflow-x-auto relative mt-5">
+              <table className="cd-ad-table min-w-[680px]">
                 <thead>
                   <tr>
                     <th>Nom</th>
@@ -143,6 +196,7 @@ export default function ImportCatalogueClient() {
                     <th>Prix</th>
                     <th>Pointures</th>
                     <th>Photos</th>
+                    <th>État</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -154,7 +208,14 @@ export default function ImportCatalogueClient() {
                       <td className="cd-num">
                         {p.sizes.filter((s) => s.available).length}/{p.sizes.length} dispo.
                       </td>
-                      <td className="cd-num">{p.imagesCount}</td>
+                      <td className="cd-num">
+                        {p.imagesPresent}/{p.imagesCount}
+                      </td>
+                      <td>
+                        <span className={`cd-ad-pill ${p.status === "partiel" ? "cd-ad-pill--warn" : "cd-ad-pill--info"}`}>
+                          {p.status === "partiel" ? "à compléter" : "à créer"}
+                        </span>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -164,14 +225,13 @@ export default function ImportCatalogueClient() {
 
           <div>
             <button onClick={handleImport} disabled={importing || !preview.blobConfigured} className="cd-ad-btn cd-ad-btn--solid">
-              {importing ? "Importation en cours (peut prendre plusieurs minutes)…" : `Importer ${preview.pendingImportCount} produits`}
+              {importing ? "Importation en cours…" : `Importer ${preview.pendingImportCount} produits`}
             </button>
             <p className="text-xs text-[var(--cd-ink-faint)] mt-3 max-w-lg">
-              Avec {preview.totalImagesInSource} photos à envoyer, l&apos;import peut prendre plusieurs
-              minutes. Si la page affiche une erreur de temporisation, c&apos;est normal avec ce volume
-              de photos — recliquez simplement sur « Importer », les produits déjà créés sont
-              automatiquement ignorés (aucun doublon), seuls les produits restants seront traités.
-              Répétez jusqu&apos;à ce que « Restant à importer » affiche 0.
+              Avec {preview.remainingImages} photos à envoyer, l&apos;import dure plusieurs minutes et
+              se fait en plusieurs passages automatiques : laissez simplement cette page ouverte.
+              Si la connexion est coupée, rien n&apos;est perdu — recliquez sur « Importer » et
+              l&apos;opération reprend exactement là où elle s&apos;était arrêtée, sans doublon.
             </p>
           </div>
         </>
@@ -179,19 +239,22 @@ export default function ImportCatalogueClient() {
 
       {resultError && <p className="cd-ad-note cd-ad-note--danger">{resultError}</p>}
 
-      {result && (
+      {progress && (
         <div className="cd-ad-card">
-          <h2 className="cd-ad-card__title">Résultat de l&apos;import</h2>
+          <h2 className="cd-ad-card__title">
+            {progress.done ? "Import terminé" : importing ? "Import en cours" : "Import interrompu"}
+          </h2>
           <ul className="text-sm text-[var(--cd-ink-soft)] flex flex-col gap-1.5 mt-5 mb-4">
-            <li>Produits créés : <strong>{result.productsCreated}</strong></li>
-            <li>Photos envoyées : <strong>{result.imagesUploaded}</strong></li>
-            <li>Pointures créées : <strong>{result.sizesCreated}</strong></li>
+            <li>Produits créés : <strong>{progress.productsCreated}</strong></li>
+            <li>Photos envoyées : <strong>{progress.imagesUploaded}</strong></li>
+            <li>Pointures créées : <strong>{progress.sizesCreated}</strong></li>
+            <li>Produits restants : <strong>{progress.remainingProducts}</strong></li>
           </ul>
-          {result.errors.length > 0 && (
+          {progress.errors.length > 0 && (
             <div className="text-sm text-[#9b302a]">
-              <p className="font-semibold mb-1">{result.errors.length} erreur(s) :</p>
+              <p className="font-semibold mb-1">{progress.errors.length} erreur(s) :</p>
               <ul className="list-disc pl-5">
-                {result.errors.map((e, i) => (
+                {progress.errors.map((e, i) => (
                   <li key={i}>{e.slug} : {e.error}</li>
                 ))}
               </ul>

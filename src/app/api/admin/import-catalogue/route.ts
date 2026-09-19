@@ -82,6 +82,44 @@ function missingImageIndexes(p: CatalogueSourceProduct, state: ProductState | un
   return missing;
 }
 
+/**
+ * Identité de la base visée, sans aucun secret : seuls le serveur et le nom de
+ * la base sont extraits de la chaîne de connexion, jamais l'utilisateur ni le
+ * mot de passe. C'est ce qui permet de vérifier, depuis le site déployé, que
+ * l'aperçu écrit bien dans la branche Neon d'aperçu et non en production : le
+ * serveur affiché (`ep-...`) est celui que Neon indique pour chaque branche.
+ *
+ * DATABASE_URL sert aux écritures du site, DIRECT_URL aux migrations lancées
+ * pendant le build : les deux doivent désigner la même base, sinon un
+ * déploiement d'aperçu migrerait la base de production.
+ */
+function describeConnection(raw: string | undefined) {
+  if (!raw) return null;
+  try {
+    const url = new URL(raw);
+    return {
+      host: url.hostname,
+      database: url.pathname.replace(/^\//, "") || null,
+      pooled: url.hostname.includes("-pooler"),
+    };
+  } catch {
+    return { host: null, database: null, pooled: false };
+  }
+}
+
+/**
+ * Deux chaînes visent la même base si le nom de base et le serveur coïncident,
+ * le suffixe « -pooler » près : Neon expose la même branche derrière deux
+ * points d'entrée, l'un mis en file d'attente et l'autre direct.
+ */
+function sameDatabase(
+  a: ReturnType<typeof describeConnection>,
+  b: ReturnType<typeof describeConnection>
+): boolean | null {
+  if (!a || !b || !a.host || !b.host) return null;
+  return a.database === b.database && a.host.replace("-pooler", "") === b.host.replace("-pooler", "");
+}
+
 export async function GET() {
   if (!catalogueSourceExists()) {
     return NextResponse.json(
@@ -92,6 +130,10 @@ export async function GET() {
 
   const source = loadCatalogueSource();
   const state = await loadState(source);
+  const productsInDatabase = await prisma.product.count();
+
+  const runtime = describeConnection(process.env.DATABASE_URL);
+  const migrations = describeConnection(process.env.DIRECT_URL);
 
   const rows = source.map((p) => {
     const current = state.get(p.id);
@@ -120,6 +162,12 @@ export async function GET() {
   const todo = rows.filter((r) => r.status !== "complet");
 
   return NextResponse.json({
+    database: {
+      runtime,
+      migrations,
+      sameTarget: sameDatabase(runtime, migrations),
+      productsInDatabase,
+    },
     blobConfigured: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
     totalInSource: source.length,
     totalImagesInSource: source.reduce((sum, p) => sum + p.images.length, 0),

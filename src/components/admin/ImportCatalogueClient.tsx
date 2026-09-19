@@ -17,7 +17,15 @@ type ProductRow = {
   status: "absent" | "partiel" | "complet";
 };
 
+type Connection = { host: string | null; database: string | null; pooled: boolean } | null;
+
 type Preview = {
+  database: {
+    runtime: Connection;
+    migrations: Connection;
+    sameTarget: boolean | null;
+    productsInDatabase: number;
+  };
   blobConfigured: boolean;
   totalInSource: number;
   totalImagesInSource: number;
@@ -149,8 +157,47 @@ export default function ImportCatalogueClient() {
 
   if (!preview) return null;
 
+  const { runtime, migrations, sameTarget, productsInDatabase } = preview.database;
+
   return (
     <div className="flex flex-col gap-6">
+      <div className="cd-ad-card">
+        <h2 className="cd-ad-card__title">Base de données visée</h2>
+        <p className="text-sm text-[var(--cd-ink-soft)] mt-4">
+          À comparer avec ce que Neon affiche pour la branche d&apos;aperçu, avant de lancer
+          l&apos;import. Ni identifiant ni mot de passe n&apos;apparaissent ici.
+        </p>
+        <table className="cd-ad-table mt-5">
+          <tbody>
+            <tr>
+              <td>Écritures du site</td>
+              <td className="text-[var(--cd-ink-soft)]">{runtime?.host ?? "non configurée"}</td>
+              <td className="text-[var(--cd-ink-soft)]">{runtime?.database ?? "—"}</td>
+            </tr>
+            <tr>
+              <td>Migrations du build</td>
+              <td className="text-[var(--cd-ink-soft)]">{migrations?.host ?? "non configurée"}</td>
+              <td className="text-[var(--cd-ink-soft)]">{migrations?.database ?? "—"}</td>
+            </tr>
+            <tr>
+              <td>Produits déjà dans cette base</td>
+              <td className="cd-num" colSpan={2}>{productsInDatabase}</td>
+            </tr>
+          </tbody>
+        </table>
+        {sameTarget === false && (
+          <p className="cd-ad-note cd-ad-note--danger mt-4">
+            Les deux lignes ne désignent pas la même base. Les migrations du build s&apos;appliquent
+            donc ailleurs que là où le site écrit : corrigez les variables avant d&apos;importer.
+          </p>
+        )}
+        {sameTarget === null && (
+          <p className="cd-ad-note cd-ad-note--warn mt-4">
+            Une des deux variables est absente ou illisible : impossible de confirmer la base visée.
+          </p>
+        )}
+      </div>
+
       <div className="cd-ad-card">
         <h2 className="cd-ad-card__title">Vérification avant import</h2>
         <ul className="text-sm text-[var(--cd-ink-soft)] flex flex-col gap-1.5 mt-5">

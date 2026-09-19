@@ -1,7 +1,5 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { ProductCategory } from "@prisma/client";
-import { UNCLASSIFIED } from "@/lib/categories";
 
 export type CatalogueSourceProduct = {
   id: string;
@@ -27,15 +25,6 @@ export type CatalogueSourceProduct = {
  * de vraies photos disponibles.
  */
 export const HIDDEN_ON_IMPORT_SLUGS = new Set<string>(["pins-crocs"]);
-
-/**
- * Le catalogue source ne distingue que « Accessoires » du reste (« Crocs ») :
- * rien n'y indique femme / homme / enfant. On ne range donc que ce qui est
- * certain et tout le reste arrive « à classer », à trier depuis l'admin.
- */
-export function categoryFromSource(p: CatalogueSourceProduct): ProductCategory {
-  return p.category.trim().toLowerCase() === "accessoires" ? "ACCESSOIRES" : UNCLASSIFIED;
-}
 
 const CATALOGUE_DIR = path.join(process.cwd(), "catalogue-import");
 const CATALOGUE_JSON_PATH = path.join(CATALOGUE_DIR, "products.json");

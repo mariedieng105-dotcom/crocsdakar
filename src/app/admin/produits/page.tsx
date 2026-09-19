@@ -2,7 +2,6 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { serializeProduct } from "@/lib/serialize";
 import AdminProductRow from "@/components/admin/AdminProductRow";
-import { UNCLASSIFIED } from "@/lib/categories";
 
 export default async function AdminProductsPage() {
   const products = await prisma.product.findMany({
@@ -10,7 +9,6 @@ export default async function AdminProductsPage() {
     include: { images: true, sizes: true },
   });
 
-  const toClassify = products.filter((p) => p.category === UNCLASSIFIED).length;
   const hidden = products.filter((p) => !p.available).length;
 
   return (
@@ -27,15 +25,10 @@ export default async function AdminProductsPage() {
         </Link>
       </div>
 
-      {(toClassify > 0 || hidden > 0) && (
-        <p className="cd-ad-note cd-ad-note--warn mt-6">
-          {[
-            toClassify > 0 ? `${toClassify} produit${toClassify > 1 ? "s" : ""} à classer` : null,
-            hidden > 0 ? `${hidden} produit${hidden > 1 ? "s masqués" : " masqué"}` : null,
-          ]
-            .filter(Boolean)
-            .join(" · ")}{" "}
-          — à ajuster directement dans le tableau ci-dessous.
+      {hidden > 0 && (
+        <p className="cd-ad-note mt-6">
+          {hidden} produit{hidden > 1 ? "s sont masqués" : " est masqué"} de la boutique. Un produit
+          masqué reste en base et se réaffiche en un clic sur « Masqué ».
         </p>
       )}
 
@@ -49,14 +42,13 @@ export default async function AdminProductsPage() {
             {/* « relative » rattache les libellés sr-only du tableau à ce
                 conteneur : sans cela, leur position absolue les sort du
                 défilement horizontal et élargit la page sur mobile. */}
-          <table className="cd-ad-table min-w-[820px]">
+          <table className="cd-ad-table min-w-[700px]">
             <thead>
               <tr>
                 <th>Photo</th>
                 <th>Nom</th>
                 <th>Modèle</th>
                 <th>Prix</th>
-                <th>Catégorie</th>
                 <th>Boutique</th>
                 <th>Actions</th>
               </tr>

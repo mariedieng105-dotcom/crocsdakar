@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import type { ProductCategory } from "@prisma/client";
-import { CATEGORY_VALUES, CATEGORY_LABELS } from "@/lib/categories";
 
 export default function NewProductForm() {
   const router = useRouter();
@@ -11,7 +9,6 @@ export default function NewProductForm() {
   const [model, setModel] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState<ProductCategory>("A_CLASSER");
   const [available, setAvailable] = useState(true);
   const [quantity, setQuantity] = useState("");
   const [sizesText, setSizesText] = useState("36, 37, 38, 39, 40, 41");
@@ -37,7 +34,6 @@ export default function NewProductForm() {
           model,
           price: price.trim() === "" ? null : Number(price),
           description,
-          category,
           available,
           quantity: quantity ? Number(quantity) : null,
           sizes,
@@ -90,26 +86,6 @@ export default function NewProductForm() {
       <div>
         <label htmlFor="description" className="cd-ad-label">Description</label>
         <textarea id="description" rows={4} value={description} onChange={(e) => setDescription(e.target.value)} className="cd-ad-field" />
-      </div>
-
-      <div>
-        <label htmlFor="new-category" className="cd-ad-label">Catégorie</label>
-        <select
-          id="new-category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value as ProductCategory)}
-          className="cd-ad-field"
-        >
-          {CATEGORY_VALUES.map((value) => (
-            <option key={value} value={value}>
-              {CATEGORY_LABELS[value]}
-            </option>
-          ))}
-        </select>
-        <p className="text-xs text-[var(--cd-ink-faint)] mt-2">
-          Détermine dans quelle catégorie de la boutique le produit apparaît. « À classer » le laisse
-          hors des catégories, sans le masquer du catalogue.
-        </p>
       </div>
 
       <div>

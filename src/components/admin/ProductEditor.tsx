@@ -5,8 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { SerializedProduct } from "@/lib/serialize";
-import type { ProductCategory } from "@prisma/client";
-import { CATEGORY_VALUES, CATEGORY_LABELS, UNCLASSIFIED } from "@/lib/categories";
 
 export default function ProductEditor({ initialProduct }: { initialProduct: SerializedProduct }) {
   const router = useRouter();
@@ -33,7 +31,6 @@ function InfoSection({ product, onSaved }: { product: SerializedProduct; onSaved
   const [model, setModel] = useState(product.model);
   const [price, setPrice] = useState(product.price !== null ? String(product.price) : "");
   const [description, setDescription] = useState(product.description);
-  const [category, setCategory] = useState<ProductCategory>(product.category);
   const [available, setAvailable] = useState(product.available);
   const [quantity, setQuantity] = useState(product.quantity !== null ? String(product.quantity) : "");
   const [saving, setSaving] = useState(false);
@@ -53,7 +50,6 @@ function InfoSection({ product, onSaved }: { product: SerializedProduct; onSaved
         model,
         price: price.trim() === "" ? null : Number(price),
         description,
-        category,
         available,
         quantity: quantity ? Number(quantity) : null,
       }),
@@ -128,27 +124,6 @@ function InfoSection({ product, onSaved }: { product: SerializedProduct; onSaved
               onChange={(e) => setQuantity(e.target.value)}
               className="cd-ad-field cd-num"
             />
-          </div>
-          <div className="sm:col-span-2">
-            <label htmlFor="product-category" className="cd-ad-label">Catégorie</label>
-            <select
-              id="product-category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value as ProductCategory)}
-              className="cd-ad-field sm:max-w-xs"
-            >
-              {CATEGORY_VALUES.map((value) => (
-                <option key={value} value={value}>
-                  {CATEGORY_LABELS[value]}
-                </option>
-              ))}
-            </select>
-            {category === UNCLASSIFIED && (
-              <p className="text-xs text-[var(--cd-gold-700)] mt-2">
-                Tant que le produit est « à classer », il n&apos;apparaît dans aucune catégorie de
-                la boutique. Il reste visible dans le catalogue et la recherche.
-              </p>
-            )}
           </div>
         </div>
 

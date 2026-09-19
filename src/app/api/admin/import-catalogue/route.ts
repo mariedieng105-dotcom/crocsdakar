@@ -7,7 +7,6 @@ import {
   readCatalogueImageFile,
   transformProduct,
   imageAltFor,
-  categoryFromSource,
   HIDDEN_ON_IMPORT_SLUGS,
 } from "@/lib/catalogue-import";
 
@@ -122,7 +121,6 @@ export async function POST() {
           slug: p.id,
           price: t.price,
           description: p.notes || "",
-          category: categoryFromSource(p),
           available: !HIDDEN_ON_IMPORT_SLUGS.has(p.id),
           quantity: t.quantity,
           sizes: { create: t.sizes },

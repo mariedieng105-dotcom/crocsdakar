@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { serializeProduct } from "@/lib/serialize";
 import type { Prisma } from "@prisma/client";
-import { categoryFromSlug } from "@/lib/categories";
 import { familyOf, isFamilyKey } from "@/lib/families";
 
 export async function GET(request: NextRequest) {
@@ -11,7 +10,6 @@ export async function GET(request: NextRequest) {
   const model = searchParams.get("model")?.trim();
   const size = searchParams.get("size")?.trim();
   const sort = searchParams.get("sort") || "newest";
-  const category = categoryFromSlug(searchParams.get("categorie"));
   const familyParam = searchParams.get("famille");
   const onlyAvailable = searchParams.get("available") !== "false";
 
@@ -38,12 +36,6 @@ export async function GET(request: NextRequest) {
 
   if (model) {
     where.model = { equals: model, mode: "insensitive" };
-  }
-
-  // Seules les catégories publiques sont filtrables : « à classer » est un état
-  // de travail interne, jamais une entrée de navigation.
-  if (category) {
-    where.category = category;
   }
 
   if (size) {

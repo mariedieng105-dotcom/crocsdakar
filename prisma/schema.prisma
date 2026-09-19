@@ -8,9 +8,17 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-/// Catégories commerciales du client. Le catalogue importé ne contient pas
-/// l'information femme / homme / enfant : les produits arrivent donc en
-/// A_CLASSER et sont rangés à la main depuis l'administration.
+/// ABANDONNÉ. Le client a choisi de s'en tenir aux quatre familles réellement
+/// présentes dans le catalogue (classiques, personnages, collaborations,
+/// sandales), déduites du slug dans src/lib/families.ts. Plus aucun écran ni
+/// aucune route n'utilise ce champ.
+///
+/// La colonne et l'enum restent en base à dessein : les supprimer demanderait
+/// une migration destructive, or `prisma migrate deploy` s'exécute pendant le
+/// build, y compris celui d'un déploiement Preview. Tant qu'il n'est pas
+/// établi que Preview vise une base distincte de la production, cette
+/// suppression ne doit pas partir. La colonne a une valeur par défaut, elle ne
+/// gêne aucune écriture.
 enum ProductCategory {
   FEMME
   HOMME
@@ -34,6 +42,8 @@ model Product {
   slug        String          @unique
   price       Int?
   description String          @db.Text
+  /// Voir le commentaire de l'enum ProductCategory : champ abandonné, conservé
+  /// en base faute de pouvoir lancer une migration destructive en Preview.
   category    ProductCategory @default(A_CLASSER)
   available   Boolean         @default(true)
   quantity    Int?

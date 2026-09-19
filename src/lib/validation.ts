@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { CATEGORY_VALUES } from "@/lib/categories";
 
 // Un prix vide, null ou une chaîne vide signifie "prix à confirmer" (le produit
 // reste visible mais non commandable tant qu'un prix n'est pas renseigné).
@@ -13,7 +12,6 @@ export const productInputSchema = z.object({
   model: z.string().trim().min(1, "Le modèle est requis."),
   price: priceInputSchema,
   description: z.string().trim().default(""),
-  category: z.enum(CATEGORY_VALUES).default("A_CLASSER"),
   available: z.coerce.boolean().default(true),
   quantity: z.coerce.number().int().nonnegative().nullable().optional(),
   sizes: z.array(z.string().trim().min(1)).default([]),

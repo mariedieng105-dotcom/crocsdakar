@@ -6,8 +6,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { formatPrice } from "@/lib/shop";
 import type { SerializedProduct } from "@/lib/serialize";
-import type { ProductCategory } from "@prisma/client";
-import { CATEGORY_VALUES, CATEGORY_LABELS, UNCLASSIFIED } from "@/lib/categories";
 
 export default function AdminProductRow({ product }: { product: SerializedProduct }) {
   const router = useRouter();
@@ -33,7 +31,6 @@ export default function AdminProductRow({ product }: { product: SerializedProduc
   };
 
   const mainImage = product.images[0];
-  const toClassify = product.category === UNCLASSIFIED;
 
   return (
     <tr className={busy ? "opacity-50" : undefined}>
@@ -53,30 +50,6 @@ export default function AdminProductRow({ product }: { product: SerializedProduc
       <td className="font-semibold text-[var(--cd-navy-900)]">{product.name}</td>
       <td className="text-[var(--cd-ink-soft)]">{product.model}</td>
       <td className="cd-num whitespace-nowrap">{formatPrice(product.price)}</td>
-      <td>
-        <label className="sr-only" htmlFor={`cat-${product.id}`}>
-          Catégorie de {product.name}
-        </label>
-        {/* Classer 39 produits en ouvrant chaque fiche serait fastidieux : la
-            catégorie se change directement depuis la liste. */}
-        <select
-          id={`cat-${product.id}`}
-          value={product.category}
-          disabled={busy}
-          onChange={(e) => patch({ category: e.target.value as ProductCategory })}
-          className={`cd-eyebrow text-[0.6rem] px-2.5 py-1.5 border bg-transparent ${
-            toClassify
-              ? "border-[var(--cd-gold-300)] bg-[var(--cd-gold-100)] text-[var(--cd-gold-700)]"
-              : "border-[var(--cd-rule)] text-[var(--cd-navy-800)]"
-          }`}
-        >
-          {CATEGORY_VALUES.map((value) => (
-            <option key={value} value={value}>
-              {CATEGORY_LABELS[value]}
-            </option>
-          ))}
-        </select>
-      </td>
       <td>
         <button
           type="button"

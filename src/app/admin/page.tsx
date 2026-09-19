@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatFCFA } from "@/lib/shop";
-import { UNCLASSIFIED } from "@/lib/categories";
 import { ArrowRightIcon } from "@/components/Icons";
 
 const STATUS_LABELS: Record<string, string> = {
@@ -13,24 +12,21 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 export default async function AdminDashboard() {
-  const [productCount, unavailableCount, toClassifyCount, newOrdersCount, orders] =
-    await Promise.all([
-      prisma.product.count(),
-      prisma.product.count({ where: { available: false } }),
-      prisma.product.count({ where: { category: UNCLASSIFIED } }),
-      prisma.order.count({ where: { status: "NOUVELLE" } }),
-      prisma.order.findMany({ orderBy: { createdAt: "desc" }, take: 6 }),
-    ]);
+  const [productCount, unavailableCount, newOrdersCount, orders] = await Promise.all([
+    prisma.product.count(),
+    prisma.product.count({ where: { available: false } }),
+    prisma.order.count({ where: { status: "NOUVELLE" } }),
+    prisma.order.findMany({ orderBy: { createdAt: "desc" }, take: 6 }),
+  ]);
 
   return (
     <div>
       <p className="cd-eyebrow text-[var(--cd-gold-700)]">Vue d&rsquo;ensemble</p>
       <h1 className="cd-ad-title mt-2">Tableau de bord</h1>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[var(--cd-rule)] border border-[var(--cd-rule)] mt-8">
+      <div className="grid grid-cols-3 gap-px bg-[var(--cd-rule)] border border-[var(--cd-rule)] mt-8">
         <StatCard label="Produits au catalogue" value={productCount} />
         <StatCard label="Nouvelles commandes" value={newOrdersCount} accent />
-        <StatCard label="Produits à classer" value={toClassifyCount} />
         <StatCard label="Produits masqués" value={unavailableCount} />
       </div>
 
@@ -42,16 +38,6 @@ export default async function AdminDashboard() {
           Voir les commandes
         </Link>
       </div>
-
-      {toClassifyCount > 0 && (
-        <p className="cd-ad-note cd-ad-note--warn mt-8">
-          {toClassifyCount} produit{toClassifyCount > 1 ? "s" : ""} encore à classer en Femme,
-          Homme, Enfant ou Accessoires.{" "}
-          <Link href="/admin/produits" className="underline underline-offset-2 font-semibold">
-            Classer maintenant
-          </Link>
-        </p>
-      )}
 
       <section className="cd-ad-card mt-8">
         <h2 className="cd-ad-card__title">Dernières commandes</h2>
